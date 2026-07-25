@@ -30,4 +30,29 @@ def get_stream_url(data: CreaTVRequest):
             detail="Invalid data!"
         )
 
-    
+    try:
+        session = streamlink.Streamlink()
+        
+        streams = session.streams(target_url)
+
+        if not streams:
+            raise HTTPException(
+                status_code=444, 
+                detail=f"No Streams for {target_url}"
+            )
+
+        result = {
+            "link_best": streams["best"].url if "best" in streams else None,
+            "link_worst": streams["worst"].url if "worst" in streams else None,
+        }
+        
+        return result
+
+    except streamlink.exceptions.NoPluginError:
+        raise HTTPException(
+            status_code=400, 
+            detail="Streamlink no found plugin"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error process stream: {str(e)}")
+
