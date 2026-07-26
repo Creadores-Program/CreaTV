@@ -54,7 +54,7 @@ public class StreamActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            MediaController mediaController = new MediaController(this);
+                            MediaController mediaController = new MediaController(StreamActivity.this);
                             mediaController.setAnchorView(videoView);
                             videoView.setMediaController(mediaController);
                             videoView.setVideoURI(Uri.parse(linkVideo));
