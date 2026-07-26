@@ -20,7 +20,7 @@ android {
         debug {
             storeFile file('CreaTv.keystore')
             storePassword System.getenv("CREATVKEYCONTREAPP")
-            keyAlias "CreaTvkey"
+            keyAlias "CreaTVkey"
             keyPassword System.getenv("CREATVKEYCONTREAPP")
         }
     }
