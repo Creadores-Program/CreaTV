@@ -31,7 +31,6 @@ public class StreamActivity extends Activity {
         Util.configWebView(this.webView, this);
         String urlTarget = (getIntent().getData() != null) ? getIntent().getData().toString() : getIntent().getExtras().getString(Util.STREAMURL);
         if(urlTarget == null){
-            Log.d("CreaTv", "Link Nulo");
             finish();
             return;
         }
@@ -40,7 +39,6 @@ public class StreamActivity extends Activity {
             String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getExtras().getString(Util.QUALITY) : "link_best";
             String linkVideo = data.getString(linkN);
             if(linkVideo == null){
-                Log.d("CreaTv", "Video Nulo");
                 finish();
                 return;
             }
@@ -70,7 +68,7 @@ public class StreamActivity extends Activity {
             webView.loadUrl(urlChat);
         }catch(Exception e){
             e.printStackTrace();
-            Log.d("CreaTv", "Error al reproducir Video");
+            Log.e("CreaTv", "Error al reproducir Video", e);
             finish();
             return;
         }
@@ -121,7 +119,6 @@ public class StreamActivity extends Activity {
         updateScreen(newConfig.orientation);
     }
     private void updateScreen(int orientation){
-        Log.d("CreaTv", "Cambiando Horientacion");
         View decorView = getWindow().getDecorView();
         if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
             int flags = View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -137,6 +134,5 @@ public class StreamActivity extends Activity {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-        Log.d("CreaTv", "Horientacion Cambiada");
     }
 }
