@@ -83,12 +83,23 @@ public class Util{
             }
         }
     }
-    public static void openVideo(String url, boolean qualitylow, Context context){
-        Intent intent = new Intent(context, org.CreadoresProgram.CreaTv.StreamActivity.class);
-        intent.setData(Uri.parse(url));
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(QUALITY, qualitylow ? "link_worst" : "link_best");
-        context.startActivity(intent);
+    public static void openVideo(final String url, final boolean qualitylow, final Context context){
+        new android.os.Handler(android.os.Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Intent intent = new Intent(context, org.CreadoresProgram.CreaTv.StreamActivity.class);
+                    intent.setData(Uri.parse(url));
+                    intent.putExtra(QUALITY, qualitylow ? "link_worst" : "link_best");
+                    if (!(context instanceof Activity)) {
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    }
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
     @SuppressWarnings("deprecation")
     public static void configWebView(WebView webView, Activity context){
