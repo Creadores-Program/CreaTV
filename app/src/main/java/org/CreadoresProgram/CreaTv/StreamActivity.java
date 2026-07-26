@@ -12,7 +12,7 @@ import android.widget.VideoView;
 import android.media.MediaPlayer;
 import android.widget.MediaController;
 import android.net.Uri;
-
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -30,11 +30,17 @@ public class StreamActivity extends Activity {
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
         String urlTarget = (getIntent().getData() != null) ? getIntent().getData().toString() : getIntent().getExtras().getString(Util.STREAMURL);
+        if(urlTarget == null){
+            Log.d("CreaTv", "Link Nulo");
+            finish();
+            return;
+        }
         try{
             JSONObject data = Util.getVideoLink(urlTarget);
             String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getExtras().getString(Util.QUALITY) : "link_best";
             String linkVideo = data.getString(linkN);
             if(linkVideo == null){
+                Log.d("CreaTv", "Video Nulo");
                 finish();
                 return;
             }
@@ -64,6 +70,7 @@ public class StreamActivity extends Activity {
             webView.loadUrl(urlChat);
         }catch(Exception e){
             e.printStackTrace();
+            Log.d("CreaTv", "Error al reproducir Video");
             finish();
             return;
         }
@@ -114,6 +121,7 @@ public class StreamActivity extends Activity {
         updateScreen(newConfig.orientation);
     }
     private void updateScreen(int orientation){
+        Log.d("CreaTv", "Cambiando Horientacion");
         View decorView = getWindow().getDecorView();
         if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
             int flags = View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -129,5 +137,6 @@ public class StreamActivity extends Activity {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
+        Log.d("CreaTv", "Horientacion Cambiada");
     }
 }
