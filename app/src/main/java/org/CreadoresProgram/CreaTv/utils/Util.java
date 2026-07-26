@@ -85,7 +85,7 @@ public class Util{
     }
     public static void openVideo(String url, boolean qualitylow, Context context){
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        intent.setPackage(context.getPackageName()); 
+        intent.setClass(context, org.CreadoresProgram.CreaTv.StreamActivity.class);
         intent.putExtra(QUALITY, qualitylow ? "link_worst" : "link_best");
         context.startActivity(intent);
     }
