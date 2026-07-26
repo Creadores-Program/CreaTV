@@ -4,10 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
 
-import org.conscrypt.Conscrypt;
-
-import java.security.Security;
-
 import org.CreadoresProgram.CreaTv.utils.Util;
 import org.CreadoresProgram.CreaTv.webview.JSInterface;
 
@@ -17,7 +13,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        Security.insertProviderAt(Conscrypt.newProvider(), 1);
         setContentView(R.layout.layout_main);
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
