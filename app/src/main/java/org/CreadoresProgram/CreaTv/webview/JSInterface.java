@@ -2,7 +2,7 @@ package org.CreadoresProgram.CreaTv.webview;
 
 import org.CreadoresProgram.CreaTv.utils.Util;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.webkit.JavascriptInterface;
 import android.net.Uri;
@@ -10,8 +10,8 @@ import android.net.Uri;
 import java.util.Locale;
 
 public class JSInterface{
-    private Context context;
-    public JSInterface(Context context){
+    private Activity context;
+    public JSInterface(Activity context){
         this.context = context;
     }
     @JavascriptInterface
