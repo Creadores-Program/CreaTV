@@ -43,11 +43,11 @@ public class MainActivity extends Activity {
     }
     @Override
     protected void onDestroy() {
-        webview.post(new Runnable(){
+        webView.post(new Runnable(){
             @Override
             public void run(){
-                webview.destroy();
-                webview = null;
+                webView.destroy();
+                webView = null;
             }
         });
         super.onDestroy();

@@ -11,8 +11,11 @@ import android.webkit.WebView;
 import android.widget.VideoView;
 import android.media.MediaPlayer;
 import android.widget.MediaController;
+import android.net.Uri;
 
 import org.conscrypt.Conscrypt;
+
+import org.json.JSONObject;
 
 import java.security.Security;
 
@@ -33,7 +36,7 @@ public class StreamActivity extends Activity {
         String urlTarget = getIntent().getData().toString();
         try{
             JSONObject data = Util.getVideoLink(urlTarget);
-            String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getExtra(Util.QUALITY) : "link_best";
+            String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getExtras().getString(Util.QUALITY) : "link_best";
             String linkVideo = data.getString(linkN);
             if(linkVideo == null){
                 finish();
@@ -95,11 +98,11 @@ public class StreamActivity extends Activity {
     }
     @Override
     protected void onDestroy() {
-        webview.post(new Runnable(){
+        webView.post(new Runnable(){
             @Override
             public void run(){
-                webview.destroy();
-                webview = null;
+                webView.destroy();
+                webView = null;
             }
         });
         super.onDestroy();
@@ -120,7 +123,7 @@ public class StreamActivity extends Activity {
             int flags = View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_NAVIGATION;
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
                 flags |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             }

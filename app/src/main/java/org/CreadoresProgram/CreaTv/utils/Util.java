@@ -89,6 +89,7 @@ public class Util{
         intent.putExtra(QUALITY, qualitylow ? "link_worst" : "link_best");
         context.startActivity(intent);
     }
+    @SuppressWarnings("deprecation")
     public static void configWebView(WebView webView, Activity context){
         webView.setWebChromeClient(new WebChromeClient());
         WebSettings webSettings = webView.getSettings();
@@ -109,7 +110,7 @@ public class Util{
         webSettings.setLoadWithOverviewMode(true);
         webView.setBackgroundColor(Color.BLACK);
     }
-    public JSONObject getVideoLink(String url) throws Exception{
+    public static JSONObject getVideoLink(String url) throws Exception{
         JSONObject reqD = new JSONObject();
         reqD.put("direct_url", url);
         RequestBody body = RequestBody.create(JSONHt, reqD.toString());
@@ -128,7 +129,7 @@ public class Util{
             if (response != null) response.close();
         }
     }
-    public String getCreatorName(Uri uri){
+    public static String getCreatorName(Uri uri){
         if (uri == null) return null;
 
         String host = uri.getHost();
