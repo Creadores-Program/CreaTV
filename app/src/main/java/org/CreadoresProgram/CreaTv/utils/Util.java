@@ -88,7 +88,11 @@ public class Util{
             @Override
             public void run() {
                 try {
-                    Intent intent = new Intent(context, org.CreadoresProgram.CreaTv.StreamActivity.class);
+                    Intent intent = new Intent();
+                    intent.setComponent(new android.content.ComponentName(
+                        "org.CreadoresProgram.CreaTv", 
+                        "org.CreadoresProgram.CreaTv.StreamActivity"
+                    ));
                     intent.setData(Uri.parse(url));
                     intent.putExtra(QUALITY, qualitylow ? "link_worst" : "link_best");
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
