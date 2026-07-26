@@ -82,7 +82,7 @@ public class StreamActivity extends Activity {
                     });
                 }catch(Exception e){
                     e.printStackTrace();
-                    Log.e("CreaTv", "Error al reproducir Video", e);
+                    //Log.e("CreaTv", "Error al reproducir Video", e);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
