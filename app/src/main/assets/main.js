@@ -51,10 +51,7 @@ window.onload = function() {
 
   function openStreamInAndroid(url) {
     var lowQuality = isLowQualitySelected();
-    
-    if (typeof Android !== 'undefined' && typeof Android.openVideo === 'function') {
-      Android.openVideo(url, lowQuality);
-    }
+    Android.openVideo(url, lowQuality);
   }
 
   function creatorExists(array, tag, platform) {
