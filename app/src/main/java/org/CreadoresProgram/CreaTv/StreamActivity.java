@@ -57,10 +57,10 @@ public class StreamActivity extends Activity {
             });
             String creator = Util.getCreatorName(getIntent().getData());
             String urlChat = "";
-            if(urlTarget.contains("twitch")){
+            if(creator != null){
                 urlChat = "https://nigthdev.com/hosted/obschat/?channel="+creator+"fade=false";
             }else{
-                urlChat = "file:///android_asset/chat/defaultChat.html?creator="+creator;
+                urlChat = "file:///android_asset/chat/defaultChat.html";
             }
             webView.loadUrl(urlChat);
         }catch(Exception e){
