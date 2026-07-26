@@ -1,0 +1,36 @@
+plugins {
+    id 'com.android.application'
+}
+dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:3.12.13'
+    implementation 'org.conscrypt:conscrypt-android:2.5.3'
+}
+
+android {
+    namespace 'org.CreadoresProgram.CreaTv'
+    compileSdkVersion 29
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0.0-beta"
+    }
+    signingConfigs {
+        debug {
+            storeFile file('CreaTv.keystore')
+            storePassword System.getenv("CREATVKEYCONTREAPP")
+            keyAlias "CreaTvkey"
+            keyPassword System.getenv("CREATVKEYCONTREAPP")
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}

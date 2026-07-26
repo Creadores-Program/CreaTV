@@ -1,0 +1,134 @@
+package org.CreadoresProgram.CreaTv;
+
+import android.app.Activity;
+import android.content.res.Configuration;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.webkit.WebView;
+import android.widget.VideoView;
+import android.media.MediaPlayer;
+import android.widget.MediaController;
+
+import org.conscrypt.Conscrypt;
+
+import java.security.Security;
+
+import org.CreadoresProgram.CreaTv.utils.Util;
+
+public class StreamActivity extends Activity {
+    private VideoView videoView;
+    private WebView webView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        Security.insertProviderAt(Conscrypt.newProvider(), 1);
+        setContentView(R.layout.layout_video);
+        this.videoView = (VideoView) findViewById(R.id.videoView);
+        this.webView = (WebView) findViewById(R.id.webview);
+        Util.configWebView(this.webView, this);
+        String urlTarget = getIntent().getData().toString();
+        try{
+            JSONObject data = Util.getVideoLink(urlTarget);
+            String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getExtra(Util.QUALITY) : "link_best";
+            String linkVideo = data.getString(linkN);
+            if(linkVideo == null){
+                finish();
+                return;
+            }
+            MediaController mediaController = new MediaController(this);
+            mediaController.setAnchorView(videoView);
+            videoView.setMediaController(mediaController);
+            videoView.setVideoURI(Uri.parse(linkVideo));
+            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    videoView.start();
+                }
+            });
+            videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mp, int what, int extra) {
+                    return true;
+                }
+            });
+            String creator = Util.getCreatorName(getIntent().getData());
+            String urlChat = "";
+            if(urlTarget.contains("twitch")){
+                urlChat = "https://nigthdev.com/hosted/obschat/?channel="+creator+"fade=false";
+            }else{
+                urlChat = "file:///android_asset/chat/defaultChat.html?creator="+creator;
+            }
+            webView.loadUrl(urlChat);
+        }catch(Exception e){
+            e.printStackTrace();
+            finish();
+            return;
+        }
+        updateScreen(getResources().getConfiguration().orientation);
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        if(this.webView != null){
+            webView.onPause();
+            webView.pauseTimers();
+        }
+        if (this.videoView != null && this.videoView.isPlaying()) {
+            videoView.pause();
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(this.webView != null){
+            webView.onResume();
+            webView.resumeTimers();
+        }
+        if (this.videoView != null && !this.videoView.isPlaying()) {
+            videoView.start();
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        webview.post(new Runnable(){
+            @Override
+            public void run(){
+                webview.destroy();
+                webview = null;
+            }
+        });
+        super.onDestroy();
+        if (this.videoView != null) {
+            this.videoView.stopPlayback();
+            this.videoView = null;
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        updateScreen(newConfig.orientation);
+    }
+    private void updateScreen(int orientation){
+        View decorView = getWindow().getDecorView();
+        if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            int flags = View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_NAVIGATION;
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+                flags |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            }
+            decorView.setSystemUiVisibility(flags);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }else{
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+    }
+}
