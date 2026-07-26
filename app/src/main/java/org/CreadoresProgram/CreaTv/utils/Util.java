@@ -116,6 +116,9 @@ public class Util{
             webSettings.setDatabasePath(context.getApplicationContext().getDir("LocalStorageOld", Context.MODE_PRIVATE).getPath());
             webView.setDrawingCacheEnabled(false);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            webSettings.setMediaPlaybackRequiresUserGesture(false);
+        }
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSettings.setBuiltInZoomControls(false);
         webSettings.setDisplayZoomControls(false);
