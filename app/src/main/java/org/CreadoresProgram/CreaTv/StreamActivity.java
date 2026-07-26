@@ -12,9 +12,10 @@ import android.widget.VideoView;
 import android.media.MediaPlayer;
 import android.widget.MediaController;
 import android.net.Uri;
-import android.util.Log;
 
 import org.json.JSONObject;
+
+import java.util.concurrent.Executors;
 
 import org.CreadoresProgram.CreaTv.utils.Util;
 
@@ -34,44 +35,58 @@ public class StreamActivity extends Activity {
             finish();
             return;
         }
-        try{
-            JSONObject data = Util.getVideoLink(urlTarget);
-            String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getExtras().getString(Util.QUALITY) : "link_best";
-            String linkVideo = data.getString(linkN);
-            if(linkVideo == null){
+        Thread networkThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    JSONObject data = Util.getVideoLink(urlTarget);
+                    String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getExtras().getString(Util.QUALITY) : "link_best";
+                    final String linkVideo = data.getString(linkN);
+                    if(linkVideo == null){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                finish();
+                            }
+                        });
+                        return;
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MediaController mediaController = new MediaController(this);
+                            mediaController.setAnchorView(videoView);
+                            videoView.setMediaController(mediaController);
+                            videoView.setVideoURI(Uri.parse(linkVideo));
+                            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                                @Override
+                                public void onPrepared(MediaPlayer mp) {
+                                    videoView.start();
+                                }
+                            });
+                            videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                                @Override
+                                public boolean onError(MediaPlayer mp, int what, int extra) {
+                                    return true;
+                                }
+                            });
+                            String creator = Util.getCreatorName(getIntent().getData());
+                            String urlChat = "";
+                            if(creator != null){
+                                urlChat = "https://nigthdev.com/hosted/obschat/?channel="+creator+"fade=false";
+                            }else{
+                                urlChat = "file:///android_asset/chat/defaultChat.html";
+                            }
+                            webView.loadUrl(urlChat);
+                        }
+                    });
+                }catch(Exception e){
+                    e.printStackTrace();
+                    Log.e("CreaTv", "Error al reproducir Video", e);
                 finish();
                 return;
             }
-            MediaController mediaController = new MediaController(this);
-            mediaController.setAnchorView(videoView);
-            videoView.setMediaController(mediaController);
-            videoView.setVideoURI(Uri.parse(linkVideo));
-            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    videoView.start();
-                }
-            });
-            videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mp, int what, int extra) {
-                    return true;
-                }
-            });
-            String creator = Util.getCreatorName(getIntent().getData());
-            String urlChat = "";
-            if(creator != null){
-                urlChat = "https://nigthdev.com/hosted/obschat/?channel="+creator+"fade=false";
-            }else{
-                urlChat = "file:///android_asset/chat/defaultChat.html";
-            }
-            webView.loadUrl(urlChat);
-        }catch(Exception e){
-            e.printStackTrace();
-            Log.e("CreaTv", "Error al reproducir Video", e);
-            finish();
-            return;
-        }
+        }});
         updateScreen(getResources().getConfiguration().orientation);
     }
 
