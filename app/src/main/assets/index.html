@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-heiht initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>CreaTV</title>
+    <link rel="stylesheet" href="./style.css"/>
+    <script src="./main.js"></script>
+</head>
+<body>
+    <div class="stream-container">
+
+    <header class="stream-header">
+      <h1 class="main-title">CreaTV</h1>
+      <p langId="selecBuscaCreador" class="subtitle"></p>
+      <div class="quality-selector-container">
+        <label langId="calidad" for="stream-quality" class="quality-label"></label>
+        <div class="select-wrapper">
+          <select id="stream-quality" class="custom-select">
+            <option langId="mejorCalidad" value="best" selected></option>
+            <option langId="bajaCalidad" value="low"></option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <main class="stream-content">
+      <section class="section-group">
+        <h2 langId="creadoresDesta" class="section-title"></h2>
+        <div id="creadores-destacados" class="creators-grid">
+          <!-- JS insertará las tarjetas aquí -->
+        </div>
+      </section>
+
+      <section class="section-group">
+        <h2 langId="creadoresGuarda" class="section-title"></h2>
+        <div id="creadores-guardados" class="creators-grid">
+          <!-- JS insertará las tarjetas aquí -->
+        </div>
+      </section>
+
+      <section class="section-group custom-section">
+        <h2 langId="creadorPerson" class="section-title"></h2>
+        
+        <form id="custom-creator-form" class="custom-form" onsubmit="return false;">
+          <div class="field-group">
+            <label for="nametag" class="field-label">Nametag</label>
+            <input 
+              type="text" 
+              id="nametag" 
+              class="custom-input" 
+              placeholder="elxokas, ibai, rubius..." 
+              required
+            >
+          </div>
+
+          <div class="field-group">
+            <span langId="selecPlatafor" class="field-label"></span>
+            <div class="platform-options">
+              
+              <label class="platform-card platform-twitch">
+                <input type="radio" name="platform" value="twitch" checked>
+                <span class="platform-btn">Twitch</span>
+              </label>
+
+              <label class="platform-card platform-kick">
+                <input type="radio" name="platform" value="kick">
+                <span class="platform-btn">Kick</span>
+              </label>
+
+              <label class="platform-card platform-youtube">
+                <input type="radio" name="platform" value="youtube">
+                <span class="platform-btn">YouTube</span>
+              </label>
+
+            </div>
+          </div>
+
+          <!-- Checkbox Guardar -->
+          <div class="checkbox-group">
+            <label class="custom-checkbox-container">
+              <input type="checkbox" id="save-creator" class="checkbox-input">
+              <span class="checkbox-custom"></span>
+              <span langId="guardar" class="checkbox-label"></span>
+            </label>
+          </div>
+          <!-- Botón de Ver -->
+          <button type="submit" id="btn-watch" class="btn-watch">
+            <span langId="ver"></span>
+          </button>
+
+        </form>
+      </section>
+
+    </main>
+
+  </div>
+</body>
+</html>

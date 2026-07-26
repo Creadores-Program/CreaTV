@@ -9,6 +9,7 @@ import org.conscrypt.Conscrypt;
 import java.security.Security;
 
 import org.CreadoresProgram.CreaTv.utils.Util;
+import org.CreadoresProgram.CreaTv.webview.JSInterface;
 
 public class MainActivity extends Activity {
     private WebView webView;
@@ -20,6 +21,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.layout_main);
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
+        webView.addJavascriptInterface(new JSInterface(this), "Android");
+        webView.loadUrl("file:///android_asset/index.html");
     }
 
     @Override

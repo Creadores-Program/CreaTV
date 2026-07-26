@@ -83,8 +83,8 @@ public class Util{
             }
         }
     }
-    public static void openUrl(String url, boolean qualitylow, Context context){
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlVideo));
+    public static void openVideo(String url, boolean qualitylow, Context context){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         intent.setPackage(context.getPackageName()); 
         intent.putExtra(QUALITY, qualitylow ? "link_worst" : "link_best");
         context.startActivity(intent);
