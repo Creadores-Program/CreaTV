@@ -12,6 +12,7 @@ import android.widget.VideoView;
 import android.media.MediaPlayer;
 import android.widget.MediaController;
 import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -82,7 +83,7 @@ public class StreamActivity extends Activity {
                     });
                 }catch(Exception e){
                     e.printStackTrace();
-                    //Log.e("CreaTv", "Error al reproducir Video", e);
+                    Log.e("CreaTv", "Error al reproducir Video", e);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
