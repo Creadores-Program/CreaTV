@@ -22,7 +22,7 @@
                 <data android:host="m.twitch.tv" />
                 <data android:host="go.twitch.tv" />
                 <data android:host="www.twitch.tv" />
-                <data android:pathPattern="/.+" />
+                <data android:pathPattern="/.*" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
