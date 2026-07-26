@@ -59,6 +59,7 @@ public class Util{
     private static final HttpUrl proxy = HttpUrl.parse("https://creatv.onrender.com/").newBuilder().addPathSegment("/stream-link").build();
     private static final MediaType JSONHt = MediaType.parse("application/json; charset=utf-8");
     public static final String QUALITY = "org.CreadoresProgram.CreaTv.QUALITY";
+    public static final String STREAMURL = "org.CreadoresProgram.CreaTv.STREAMURL";
     public static String readAssetAsString(AssetManager assetManager, String filePath) {
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = null;
@@ -90,6 +91,7 @@ public class Util{
                 try {
                     Intent intent = new Intent(context, org.CreadoresProgram.CreaTv.StreamActivity.class);
                     //intent.setData(Uri.parse(url));
+                    intent.putExtra(STREAMURL, url);
                     intent.putExtra(QUALITY, qualitylow ? "link_worst" : "link_best");
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
