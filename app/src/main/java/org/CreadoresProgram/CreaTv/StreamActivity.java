@@ -8,9 +8,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
-import android.widget.VideoView;
-import android.media.MediaPlayer;
-import android.widget.MediaController;
 import android.net.Uri;
 import android.util.Log;
 
@@ -21,16 +18,17 @@ import java.util.concurrent.Executors;
 import org.CreadoresProgram.CreaTv.utils.Util;
 
 public class StreamActivity extends Activity {
-    private VideoView videoView;
+    private WebView videoView;
     private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_video);
-        this.videoView = (VideoView) findViewById(R.id.videoView);
+        this.videoView = (WebView) findViewById(R.id.videoView);
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
+        Util.configWebView(this.videoView, this);
         String urlTarget = (getIntent().getData() != null) ? getIntent().getData().toString() : getIntent().getExtras().getString(Util.STREAMURL);
         if(urlTarget == null){
             finish();
@@ -55,26 +53,11 @@ public class StreamActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            MediaController mediaController = new MediaController(StreamActivity.this);
-                            mediaController.setAnchorView(videoView);
-                            videoView.setMediaController(mediaController);
-                            videoView.setVideoURI(Uri.parse(linkVideo));
-                            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                                @Override
-                                public void onPrepared(MediaPlayer mp) {
-                                    videoView.start();
-                                }
-                            });
-                            videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                                @Override
-                                public boolean onError(MediaPlayer mp, int what, int extra) {
-                                    return true;
-                                }
-                            });
+                            videoView.loadUrl("file:///android_asset/videoPlayer/videoPlayer.html?link="+linkVideo);
                             String creator = Util.getCreatorName(getIntent().getData());
                             String urlChat = "";
                             if(creator != null){
-                                urlChat = "https://nigthdev.com/hosted/obschat/?channel="+creator+"fade=false";
+                                urlChat = "https://nightdev.com/hosted/obschat/?channel="+creator+"&fade=false";
                             }else{
                                 urlChat = "file:///android_asset/chat/defaultChat.html";
                             }
@@ -106,7 +89,8 @@ public class StreamActivity extends Activity {
             webView.pauseTimers();
         }
         if (this.videoView != null && this.videoView.isPlaying()) {
-            videoView.pause();
+            videoView.onPause();
+            videoView.pauseTimers();
         }
     }
     @Override
@@ -117,7 +101,8 @@ public class StreamActivity extends Activity {
             webView.resumeTimers();
         }
         if (this.videoView != null && !this.videoView.isPlaying()) {
-            videoView.start();
+            videoView.onResume();
+            videoView.resumeTimers();
         }
     }
     @Override
@@ -130,10 +115,13 @@ public class StreamActivity extends Activity {
             }
         });
         super.onDestroy();
-        if (this.videoView != null) {
-            this.videoView.stopPlayback();
-            this.videoView = null;
-        }
+        videoView.post(new Runnable(){
+            @Override
+            public void run(){
+                videoView.destroy();
+                videoView = null;
+            }
+        });
     }
 
     @Override
