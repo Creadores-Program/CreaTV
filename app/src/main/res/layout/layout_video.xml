@@ -6,8 +6,7 @@
     <VideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:background="#000000" />
+        android:layout_height="230dp" />
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
