@@ -13,11 +13,8 @@ import android.media.MediaPlayer;
 import android.widget.MediaController;
 import android.net.Uri;
 
-import org.conscrypt.Conscrypt;
 
 import org.json.JSONObject;
-
-import java.security.Security;
 
 import org.CreadoresProgram.CreaTv.utils.Util;
 
@@ -28,7 +25,6 @@ public class StreamActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        Security.insertProviderAt(Conscrypt.newProvider(), 1);
         setContentView(R.layout.layout_video);
         this.videoView = (VideoView) findViewById(R.id.videoView);
         this.webView = (WebView) findViewById(R.id.webview);
