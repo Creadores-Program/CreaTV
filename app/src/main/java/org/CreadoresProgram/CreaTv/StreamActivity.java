@@ -33,7 +33,7 @@ public class StreamActivity extends Activity {
         this.videoView = (VideoView) findViewById(R.id.videoView);
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
-        String urlTarget = getIntent().getData().toString();
+        String urlTarget = ((getIntent().getData() != null) ? getIntent().getData() : getIntent().getExtras().getString(Util.STREAMURL)).toString();
         try{
             JSONObject data = Util.getVideoLink(urlTarget);
             String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getExtras().getString(Util.QUALITY) : "link_best";
