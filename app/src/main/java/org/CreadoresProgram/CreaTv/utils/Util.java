@@ -83,16 +83,15 @@ public class Util{
             }
         }
     }
-    public static void openVideo(final String url, final boolean qualitylow, final Context context){
-        new android.os.Handler(android.os.Looper.getMainLooper()).post(new Runnable() {
+    public static void openVideo(final String url, final boolean qualitylow, final Activity context){
+        context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Intent intent = new Intent();
-                    intent.setClassName(context.getPackageName(), "org.CreadoresProgram.CreaTv.StreamActivity");
+                    Intent intent = new Intent(context, org.CreadoresProgram.CreaTv.StreamActivity.class);
                     intent.setData(Uri.parse(url));
                     intent.putExtra(QUALITY, qualitylow ? "link_worst" : "link_best");
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     context.startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
