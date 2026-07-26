@@ -88,12 +88,11 @@ public class Util{
             @Override
             public void run() {
                 try {
-                    Intent intent = new Intent(context, org.CreadoresProgram.CreaTv.StreamActivity.class);
+                    Intent intent = new Intent();
+                    intent.setClassName(context.getPackageName(), "org.CreadoresProgram.CreaTv.StreamActivity");
                     intent.setData(Uri.parse(url));
                     intent.putExtra(QUALITY, qualitylow ? "link_worst" : "link_best");
-                    if (!(context instanceof Activity)) {
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    }
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
