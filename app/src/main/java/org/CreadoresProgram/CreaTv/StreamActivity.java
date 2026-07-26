@@ -88,7 +88,7 @@ public class StreamActivity extends Activity {
             webView.onPause();
             webView.pauseTimers();
         }
-        if (this.videoView != null && this.videoView.isPlaying()) {
+        if (this.videoView != null) {
             videoView.onPause();
             videoView.pauseTimers();
         }
@@ -100,7 +100,7 @@ public class StreamActivity extends Activity {
             webView.onResume();
             webView.resumeTimers();
         }
-        if (this.videoView != null && !this.videoView.isPlaying()) {
+        if (this.videoView != null) {
             videoView.onResume();
             videoView.resumeTimers();
         }
