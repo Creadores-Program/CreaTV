@@ -32,12 +32,15 @@ def get_stream_url(data: CreaTVRequest):
 
     try:
         session = streamlink.Streamlink()
+        session.set_option("http-headers", {
+            "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36"
+        })
         
         streams = session.streams(target_url)
 
         if not streams:
             raise HTTPException(
-                status_code=444, 
+                status_code=404, 
                 detail=f"No Streams for {target_url}"
             )
 
@@ -55,4 +58,4 @@ def get_stream_url(data: CreaTVRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error process stream: {str(e)}")
-
+    
