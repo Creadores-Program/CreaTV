@@ -94,7 +94,8 @@ public class Util{
                     intent.putExtra(STREAMURL, url);
                     intent.putExtra(QUALITY, qualitylow ? "link_worst" : "link_best");
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     context.startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
