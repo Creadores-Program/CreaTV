@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.net.Uri;
+import android.content.Intent;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -54,6 +55,9 @@ public class StreamActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setDataAndType(Uri.parse(linkVideo), "video/*");
+                            startActivity(intent);
                             videoView.loadUrl("file:///android_asset/videoPlayer/videoPlayer.html?link="+linkVideo);
                             String creator = Util.getCreatorName(getIntent().getData());
                             String urlChat = "";
