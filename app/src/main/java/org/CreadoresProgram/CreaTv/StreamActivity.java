@@ -29,6 +29,7 @@ public class StreamActivity extends Activity {
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
         Util.configWebView(this.videoView, this);
+        Util.configVideoRequest(this.videoView);
         String urlTarget = (getIntent().getData() != null) ? getIntent().getData().toString() : getIntent().getExtras().getString(Util.STREAMURL);
         if(urlTarget == null){
             finish();
