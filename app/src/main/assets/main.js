@@ -14,10 +14,21 @@ if (!String.prototype.trim) {
 window.onload = function() {
 
   var defaultFeaturedCreators = [
+    { name: 'Matias01jr (Minecraft, Roblox) (Creador del programa original)', platform: 'twitch', tag: 'matias01jr' },
+    { name: 'Matias01jr (Minecraft, Roblox) (Creador del programa original)', platform: 'kick', tag: 'matias01jr' },
+    { name: 'Matias01jr (Minecraft, Roblox) (Creador del programa original)', platform: 'youtube', tag: 'matias01jr' },
+    { name: 'Trollhunters501 (Roblox, Minecraft, Programing) (Creador de la app)', platform: 'twitch', tag: 'trollhunters501' },
+    { name: 'Trollhunters501 (Programing) (Creador de la app)', platform: 'kick', tag: 'trollhunters501' },
+    { name: 'Trollhunters501 (Roblox, Minecraft) (Creador de la app)', platform: 'youtube', tag: 'Trollhunters501' },
+    { name: 'katynwn (ASMR, Karaoke, Games)', platform: 'twitch', tag: 'katynwn'},
+    { name: 'lSoyDarki (LOL, ASMR, Karaoke)', platform: 'twitch', tag: 'lsoydarki'},
+    { name: 'Bobicraft (Minecraft)', platform: 'twitch', tag: 'bobicraftmc'},
+    { name: 'VicmasterPE (Craftsman, Minecraft)', platform: 'twitch', tag: 'vicmaster_pe'},
+    { name: 'Vicmaster (Craftsman, Minecraft)', platform: 'youtube', tag: 'vicmaster_'},
     { name: 'Ibai', platform: 'twitch', tag: 'ibai' },
     { name: 'ElXokas', platform: 'twitch', tag: 'elxokas' },
     { name: 'WestCOL', platform: 'kick', tag: 'westcol' },
-    { name: 'AuronPlay', platform: 'twitch', tag: 'auronplay' }
+    { name: 'AuronPlay', platform: 'twitch', tag: 'auronplay' },
   ];
 
   var platformBaseUrls = {
@@ -64,22 +75,59 @@ window.onload = function() {
     return false;
   }
 
-  function createCreatorCard(creator) {
+  function deleteCreatorFromStorage(tag, platform) {
+    var savedRaw = localStorage.getItem(STORAGE_KEY);
+    var saved = savedRaw ? JSON.parse(savedRaw) : [];
+    var updated = [];
+    var i;
+
+    for (i = 0; i < saved.length; i++) {
+      if (!(saved[i].tag.toLowerCase() === tag.toLowerCase() && saved[i].platform === platform)) {
+        updated.push(saved[i]);
+      }
+    }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    renderSavedCreators();
+  }
+
+  function createCreatorCard(creator, isRemovable) {
     var card = document.createElement('div');
     card.className = 'creator-card platform-badge-' + creator.platform;
-    card.style.cssText = 'background: #18181c; border: 1px solid #282830; border-radius: 8px; padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; min-width: 160px;';
+    card.style.cssText = 'background: #18181c; border: 1px solid #282830; border-radius: 8px; padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; min-width: 160px; position: relative;';
 
     var displayName = creator.name ? creator.name : creator.tag;
 
-    card.innerHTML = '<div>' +
+    var deleteBtnHtml = '';
+    if (isRemovable) {
+      deleteBtnHtml = '<button type="button" class="btn-delete-creator" style="background:transparent; border:none; color:#ff4d4d; font-weight:bold; font-size:1rem; cursor:pointer; padding:0 0 0 0.5rem; line-height:1;">&#10005;</button>';
+    }
+
+    card.innerHTML = '<div style="flex-grow:1;">' +
       '<strong style="display:block; color:#fff;">' + displayName + '</strong>' +
       '<small style="color:#8a8a9e; text-transform:uppercase; font-size:0.7rem;">' + creator.platform + '</small>' +
-    '</div>';
+    '</div>' + deleteBtnHtml;
 
     card.onclick = function() {
       var url = buildStreamUrl(creator.platform, creator.tag);
       openStreamInAndroid(url);
     };
+
+    if (isRemovable) {
+      var btnDelete = card.getElementsByTagName('button')[0];
+      if (btnDelete) {
+        btnDelete.onclick = function(e) {
+          var event = e || window.event;
+          if (event.stopPropagation) {
+            event.stopPropagation();
+          } else {
+            event.cancelBubble = true;
+          }
+          
+          deleteCreatorFromStorage(creator.tag, creator.platform);
+        };
+      }
+    }
 
     return card;
   }
@@ -88,7 +136,7 @@ window.onload = function() {
     featuredContainer.innerHTML = '';
     var i;
     for (i = 0; i < defaultFeaturedCreators.length; i++) {
-      var card = createCreatorCard(defaultFeaturedCreators[i]);
+      var card = createCreatorCard(defaultFeaturedCreators[i], false);
       featuredContainer.appendChild(card);
     }
   }
@@ -106,7 +154,7 @@ window.onload = function() {
 
     var i;
     for (i = 0; i < saved.length; i++) {
-      var card = createCreatorCard(saved[i]);
+      var card = createCreatorCard(saved[i], true);
       savedContainer.appendChild(card);
     }
   }
@@ -160,15 +208,16 @@ window.onload = function() {
 
   renderFeaturedCreators();
   renderSavedCreators();
+  
   var elementsQlang = document.querySelectorAll("[langId]");
-    for(var idod = 0; idod < elementsQlang.length; idod++){
-        var elementQlang = elementsQlang[idod];
-        var attrLang = elementQlang.getAttribute("langId");
-        if(window.langPage[attrLang]){
-            elementQlang.textContent = window.langPage[attrLang];
-        }else{
-            console.warn("Invalid key " + attrLang);
-        }
-    }
-    document.body.style.opacity = "1";
+  for(var idod = 0; idod < elementsQlang.length; idod++){
+      var elementQlang = elementsQlang[idod];
+      var attrLang = elementQlang.getAttribute("langId");
+      if(window.langPage[attrLang]){
+          elementQlang.textContent = window.langPage[attrLang];
+      }else{
+          console.warn("Invalid key " + attrLang);
+      }
+  }
+  document.body.style.opacity = "1";
 };
