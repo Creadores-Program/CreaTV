@@ -31,6 +31,8 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.Charset;
 
+import org.CreadoresProgram.CreaTv.webview.VideoWebViewClient;
+
 public class Util{
     public static final Charset dataCodeStr;
     static{
@@ -126,6 +128,11 @@ public class Util{
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webView.setBackgroundColor(Color.BLACK);
+    }
+    public static void configVideoRequest(WebView webview){
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.P){
+            webview.setWebViewClient(new VideoWebViewClient(clientHt));
+        }
     }
     public static JSONObject getVideoLink(String url) throws Exception{
         JSONObject reqD = new JSONObject();
