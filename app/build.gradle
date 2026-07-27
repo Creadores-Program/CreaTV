@@ -4,7 +4,7 @@ plugins {
 dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.12.13'
     implementation 'org.conscrypt:conscrypt-android:2.5.3'
-    implementation 'com.github.google:ExoPlayer:r2.11.8'
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.8'
 }
 
 android {
