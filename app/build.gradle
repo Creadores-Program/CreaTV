@@ -4,6 +4,9 @@ plugins {
 dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.12.13'
     implementation 'org.conscrypt:conscrypt-android:2.5.3'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.11.8'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.11.8'
+    implementation 'com.google.android.exoplayer:extension-okhttp:2.11.8'
 }
 
 android {
