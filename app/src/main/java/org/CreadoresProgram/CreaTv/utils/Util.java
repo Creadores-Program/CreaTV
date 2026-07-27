@@ -31,8 +31,6 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.Charset;
 
-import org.CreadoresProgram.CreaTv.webview.VideoWebViewClient;
-
 public class Util{
     public static final Charset dataCodeStr;
     static{
@@ -129,11 +127,6 @@ public class Util{
         webSettings.setLoadWithOverviewMode(true);
         webView.setBackgroundColor(Color.BLACK);
     }
-    public static void configVideoRequest(WebView webview){
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.P){
-            webview.setWebViewClient(new VideoWebViewClient(clientHt));
-        }
-    }
     public static JSONObject getVideoLink(String url) throws Exception{
         JSONObject reqD = new JSONObject();
         reqD.put("direct_url", url);
@@ -152,23 +145,5 @@ public class Util{
         }finally {
             if (response != null) response.close();
         }
-    }
-    public static String getCreatorName(Uri uri){
-        if (uri == null) return null;
-
-        String host = uri.getHost();
-        if (host == null) return null;
-
-        host = host.toLowerCase();
-        List<String> pathSegments = uri.getPathSegments();
-
-        if (pathSegments.isEmpty()) return null;
-
-        if (host.contains("twitch.tv")) {
-            String channel = pathSegments.get(0);
-            return (!channel.equalsIgnoreCase("directory") && !channel.equalsIgnoreCase("videos")) ? channel : null;
-        }
-
-        return null;
     }
 }
