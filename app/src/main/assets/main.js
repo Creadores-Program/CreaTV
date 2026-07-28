@@ -29,12 +29,17 @@ window.onload = function() {
     { name: 'ElXokas', platform: 'twitch', tag: 'elxokas' },
     { name: 'WestCOL', platform: 'kick', tag: 'westcol' },
     { name: 'AuronPlay', platform: 'twitch', tag: 'auronplay' },
+    { name: 'El Rubius (Gaming, Variety)', platform: 'twitch', tag: 'elrubius' },
+    { name: 'Khaby Lame (Humor)', platform: 'tiktok', tag: 'khaby.lame' },
+    { name: 'Alexis Omman (Challenges and Gifts)', platform: 'tiktok', tag: 'alexisomman' },
+    { name: 'Carlos Feria (Entertainment)', platform: 'tiktok', tag: 'carlosferia4' }
   ];
 
   var platformBaseUrls = {
     twitch: 'https://twitch.tv/',
     kick: 'https://kick.com/',
-    youtube: 'https://youtube.com/@'
+    youtube: 'https://youtube.com/@',
+    tiktok: 'https://www.tiktok.com/@'
   };
 
   var STORAGE_KEY = 'saved_stream_creators';
@@ -55,6 +60,9 @@ window.onload = function() {
   function buildStreamUrl(platform, tag) {
     var cleanTag = tag.replace(/^\s+|\s+$/g, '').replace(/^@/, '');
     var platKey = platform.toLowerCase();
+    if (platKey === 'youtube' || platKey === 'tiktok') {
+      return platformBaseUrls[platKey] + cleanTag + '/live';
+    }
     var baseUrl = platformBaseUrls[platKey] ? platformBaseUrls[platKey] : platformBaseUrls['twitch'];
     
     return baseUrl + cleanTag;

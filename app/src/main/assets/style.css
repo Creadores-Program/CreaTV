@@ -209,6 +209,11 @@ body {
     color: #ffffff;
     background-color: #3b1212;
 }
+.platform-tiktok input[type="radio"]:checked + .platform-btn {
+    border-color: #00f2fe;
+    color: #ffffff;
+    background-color: #16242c;
+}
 
 .checkbox-group {
     margin-bottom: 25px;

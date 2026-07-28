@@ -17,6 +17,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
                 <data android:scheme="https" />
                 <data android:host="twitch.tv" />
                 <data android:host="m.twitch.tv" />
@@ -28,6 +29,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
                 <data android:scheme="https" />
                 <data android:host="kick.com" />
                 <data android:host="www.kick.com" />
@@ -37,12 +39,32 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
                 <data android:scheme="https" />
                 <data android:host="youtube.com" />
                 <data android:host="www.youtube.com" />
                 <data android:host="youtu.be" />
                 <data android:host="m.youtube.com" />
                 <data android:pathPrefix="/live/" />
+                <data android:pathPattern="/@.*/live" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="vt.tiktok.com" />
+                <data android:host="vm.tiktok.com" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="www.tiktok.com" />
+                <data android:host="tiktok.com" />
                 <data android:pathPattern="/@.*/live" />
             </intent-filter>
         </activity>
