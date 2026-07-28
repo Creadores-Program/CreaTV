@@ -12,6 +12,7 @@ import android.util.Log;
 import org.json.JSONObject;
 
 import java.util.concurrent.Executors;
+import java.io.IOException;
 
 import org.CreadoresProgram.CreaTv.utils.Util;
 
@@ -60,9 +61,26 @@ public class StreamActivity extends Activity {
                             finish();
                         }
                     });
+                } catch (final IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            new AlertDialog.Builder(StreamActivity.this, android.R.style.Theme_Holo_Light_Dialog)
+                                .setTitle("Error Network!")
+                                .setMessage(e.getMessage())
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                                .setCancelable(false)
+                                .create().show();
+                        }
+                    });
+                    return;
                 }catch(Exception e){
                     e.printStackTrace();
-                    Log.e("CreaTv", "Error al reproducir Video", e);
+                    Log.e("CreaTv", "Error play Video", e);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
