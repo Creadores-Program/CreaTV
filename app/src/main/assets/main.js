@@ -34,7 +34,8 @@ window.onload = function() {
   var platformBaseUrls = {
     twitch: 'https://twitch.tv/',
     kick: 'https://kick.com/',
-    youtube: 'https://youtube.com/@'
+    youtube: 'https://youtube.com/@',
+    tiktok: 'https://www.tiktok.com/@'
   };
 
   var STORAGE_KEY = 'saved_stream_creators';
@@ -55,6 +56,9 @@ window.onload = function() {
   function buildStreamUrl(platform, tag) {
     var cleanTag = tag.replace(/^\s+|\s+$/g, '').replace(/^@/, '');
     var platKey = platform.toLowerCase();
+    if (platKey === 'youtube' || platKey === 'tiktok') {
+      return platformBaseUrls[platKey] + cleanTag + '/live';
+    }
     var baseUrl = platformBaseUrls[platKey] ? platformBaseUrls[platKey] : platformBaseUrls['twitch'];
     
     return baseUrl + cleanTag;
