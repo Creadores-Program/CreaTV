@@ -1,10 +1,12 @@
 package org.CreadoresProgram.CreaTv;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.net.Uri;
 import android.content.Intent;
+import android.content.DialogInterface;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -35,7 +37,16 @@ public class StreamActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                finish();
+                                new AlertDialog.Builder(StreamActivity.this, android.R.style.Theme_Holo_Light_Dialog)
+                                    .setTitle("No Link!")
+                                    .setMessage("No link was provided!")
+                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            finish();
+                                        }
+                                    })
+                                    .setCancelable(false)
+                                    .create().show();
                             }
                         });
                         return;
@@ -55,7 +66,16 @@ public class StreamActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            finish();
+                            new AlertDialog.Builder(StreamActivity.this, android.R.style.Theme_Holo_Light_Dialog)
+                                .setTitle("Error!")
+                                .setMessage("An unknown error occurred. Sometimes just try 3 more times! Or perhaps your content creator isn't online!")
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                                .setCancelable(false)
+                                .create().show();
                         }
                     });
                    return;
