@@ -29,6 +29,10 @@ window.onload = function() {
     { name: 'ElXokas', platform: 'twitch', tag: 'elxokas' },
     { name: 'WestCOL', platform: 'kick', tag: 'westcol' },
     { name: 'AuronPlay', platform: 'twitch', tag: 'auronplay' },
+    { name: 'El Rubius (Gaming, Variety)', platform: 'twitch', tag: 'elrubius' },
+    { name: 'Khaby Lame (Humor)', platform: 'tiktok', tag: 'khaby.lame' },
+    { name: 'Alexis Omman (Challenges and Gifts)', platform: 'tiktok', tag: 'alexisomman' },
+    { name: 'Carlos Feria (Entertainment)', platform: 'tiktok', tag: 'carlosferia4' }
   ];
 
   var platformBaseUrls = {
