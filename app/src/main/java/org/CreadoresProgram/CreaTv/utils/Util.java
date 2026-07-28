@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
@@ -46,6 +47,7 @@ public class Util{
         }
     }
     private static final OkHttpClient clientHt = new OkHttpClient.Builder()
+        .connectTimeout(15, TimeUnit.SECONDS)
         .connectionSpecs(Arrays.asList(
             new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                 .tlsVersions(TlsVersion.TLS_1_3, TlsVersion.TLS_1_2)
