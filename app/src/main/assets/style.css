@@ -270,6 +270,7 @@ body {
 }
 .btn-watch {
     width: 100%;
+    outline: none;
     padding: 15px;
     background-color: #6366f1;
     color: #ffffff;
@@ -291,6 +292,13 @@ body {
 .btn-watch:active {
     -webkit-transform: scale(0.98);
     transform: scale(0.98);
+}
+
+.btn-watch:focus {
+    background-color: #4f46e5;
+    border-color: #6366f1;
+    -webkit-box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5);
 }
 
 .quality-selector-container {
@@ -348,6 +356,16 @@ body {
 .custom-select option {
     background-color: #121216;
     color: #f0f0f5;
+}
+
+.chat-option-container {
+    margin-top: 15px;
+    text-align: center;
+}
+.checkbox-input:focus + .checkbox-custom {
+    border-color: #6366f1 !important;
+    -webkit-box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4);
 }
 
 @media (max-width: 600px) {

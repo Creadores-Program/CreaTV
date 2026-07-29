@@ -52,6 +52,7 @@ window.onload = function() {
   var customForm = document.getElementById('custom-creator-form');
   var nametagInput = document.getElementById('nametag');
   var saveCheckbox = document.getElementById('save-creator');
+  var openChatCheck = document.getElementById('open-chat');
 
   
   function isLowQualitySelected() {
@@ -71,7 +72,8 @@ window.onload = function() {
 
   function openStreamInAndroid(url) {
     var lowQuality = isLowQualitySelected();
-    Android.openVideo(url, lowQuality);
+    var openChat = openChatCheck.checked && url.indexOf("twitch") >= 0;
+    Android.openVideo(url, lowQuality, openChat);
   }
 
   function creatorExists(array, tag, platform) {

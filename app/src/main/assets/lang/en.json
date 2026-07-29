@@ -9,5 +9,6 @@
     "calidad": "Playback quality:",
     "mejorCalidad": "Best quality",
     "bajaCalidad": "Low quality",
-    "noCreadores": "You have no saved creators."
+    "noCreadores": "You have no saved creators.",
+    "abrirChatTwitch": "Open Twitch chat"
 }

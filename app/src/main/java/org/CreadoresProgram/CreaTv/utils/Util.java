@@ -88,7 +88,7 @@ public class Util{
             }
         }
     }
-    public static void openVideo(final String url, final boolean qualitylow, final Activity context){
+    public static void openVideo(final String url, final boolean qualitylow, final boolean openChat, final Activity context){
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -97,6 +97,9 @@ public class Util{
                     //intent.setData(Uri.parse(url));
                     intent.putExtra(STREAMURL, url);
                     intent.putExtra(QUALITY, qualitylow ? "link_worst" : "link_best");
+                    if(openChat){
+                        intent.putExtra(ONCHAT, openChat);
+                    }
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
