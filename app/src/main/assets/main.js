@@ -17,6 +17,7 @@ window.onload = function() {
     { name: 'Matias01jr (Minecraft, Roblox) (Creador del programa original)', platform: 'twitch', tag: 'matias01jr' },
     { name: 'Matias01jr (Minecraft, Roblox) (Creador del programa original)', platform: 'kick', tag: 'matias01jr' },
     { name: 'Matias01jr (Minecraft, Roblox) (Creador del programa original)', platform: 'youtube', tag: 'matias01jr' },
+    { name: 'Matias01jr (Minecraft, Roblox) (Creador del programa original)', platform: 'tiktok', tag: 'matias01gamer' },
     { name: 'Trollhunters501 (Roblox, Minecraft, Programing) (Creador de la app)', platform: 'twitch', tag: 'trollhunters501' },
     { name: 'Trollhunters501 (Programing) (Creador de la app)', platform: 'kick', tag: 'trollhunters501' },
     { name: 'Trollhunters501 (Roblox, Minecraft) (Creador de la app)', platform: 'youtube', tag: 'Trollhunters501' },

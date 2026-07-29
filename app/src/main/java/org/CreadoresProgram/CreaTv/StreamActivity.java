@@ -32,7 +32,7 @@ public class StreamActivity extends Activity {
             public void run() {
                 try{
                     JSONObject data = Util.getVideoLink(urlTarget);
-                    String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getExtras().getString(Util.QUALITY) : "link_best";
+                    String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getExtras().getString(Util.QUALITY) : "link_worst";
                     final String linkVideo = data.getString(linkN);
                     if(linkVideo == null){
                         runOnUiThread(new Runnable() {
@@ -55,6 +55,17 @@ public class StreamActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            if(getIntent().getExtras().hasExtra(Util.ONCHAT)){
+                                String creator = Util.getCreatorName(Uri.parse(urlTarget));
+                                if(creator != null){
+                                    Intent cintent = new Intent(this, ChatActivity.class);
+                                    cintent.putExtra(Util.CREATORNAME, creator);
+                                    cintent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    cintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    cintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(cintent);
+                                }
+                            }
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             intent.setDataAndType(Uri.parse(linkVideo), "video/*");
                             startActivity(intent);

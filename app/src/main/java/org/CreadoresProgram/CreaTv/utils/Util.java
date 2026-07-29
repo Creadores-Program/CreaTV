@@ -62,6 +62,8 @@ public class Util{
     private static final MediaType JSONHt = MediaType.parse("application/json; charset=utf-8");
     public static final String QUALITY = "org.CreadoresProgram.CreaTv.QUALITY";
     public static final String STREAMURL = "org.CreadoresProgram.CreaTv.STREAMURL";
+    public static final String CREATORNAME = "org.CreadoresProgram.CreaTv.CREATORNAME";
+    public static final String ONCHAT = "org.CreadoresProgram.CreaTv.ONCHAT";
     public static String readAssetAsString(AssetManager assetManager, String filePath) {
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = null;
@@ -147,5 +149,23 @@ public class Util{
         }finally {
             if (response != null) response.close();
         }
+    }
+    public static String getCreatorName(Uri uri){
+        if (uri == null) return null;
+
+        String host = uri.getHost();
+        if (host == null) return null;
+
+        host = host.toLowerCase();
+        List<String> pathSegments = uri.getPathSegments();
+
+        if (pathSegments.isEmpty()) return null;
+
+        if (host.contains("twitch")) {
+            String channel = pathSegments.get(0);
+            return (!channel.equalsIgnoreCase("directory") && !channel.equalsIgnoreCase("videos")) ? channel : null;
+        }
+
+        return null;
     }
 }
