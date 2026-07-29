@@ -55,10 +55,10 @@ public class StreamActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(getIntent().getExtras().hasExtra(Util.ONCHAT)){
+                            if(getIntent().hasExtra(Util.ONCHAT)){
                                 String creator = Util.getCreatorName(Uri.parse(urlTarget));
                                 if(creator != null){
-                                    Intent cintent = new Intent(this, ChatActivity.class);
+                                    Intent cintent = new Intent(StreamActivity.this, ChatActivity.class);
                                     cintent.putExtra(Util.CREATORNAME, creator);
                                     cintent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                     cintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
