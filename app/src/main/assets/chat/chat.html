@@ -16,7 +16,7 @@
             padding: 0;
             background-color: #0e0e10;
             color: #efeff1;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-family: "Inter", "Roobert", "Helvetica Neue", Helvetica, Arial, sans-serif;
             font-size: 13px;
             overflow-x: hidden;
             overflow-y: auto;
@@ -24,10 +24,10 @@
         }
 
         #chat {
-            padding: 8px;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: flex;
+            padding: 8px 10px;
+            width: 100%;
+            min-height: 100%;
+            display: block;
             -webkit-box-orient: vertical;
             -webkit-box-direction: normal;
             -webkit-flex-direction: column;
@@ -35,7 +35,9 @@
             -webkit-box-pack: end;
             -webkit-justify-content: flex-end;
             justify-content: flex-end;
-            min-height: 100%;
+            background-color: #0e0e10;
+            -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
 
         .message {
@@ -44,11 +46,22 @@
             word-wrap: break-word;
             word-break: break-word;
             -webkit-hyphens: auto;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
         }
 
         .user {
-            font-weight: bold;
+            font-weight: 700;
             color: #a970ff;
+            margin-right: 4px;
+        }
+
+        .separator {
+            color: #adadb8;
+            margin-right: 4px;
+        }
+
+        .text {
+            color: #efeff1;
         }
 
         :-webkit-scrollbar {
@@ -58,9 +71,12 @@
             background: #0e0e10;
         }
         :-webkit-scrollbar-thumb {
-            background: #1f1f23;
+            background: #26262c;
             -webkit-border-radius: 2px;
             border-radius: 2px;
+        }
+        :-webkit-scrollbar-thumb:hover {
+            background: #3a3a44;
         }
     </style>
 </head>
@@ -68,6 +84,8 @@
     <div id="chat"></div>
 
     <script>
+        var MAX_MESSAGES = 75;
+
         function getQueryParam(param) {
             var query = window.location.search.substring(1);
             var vars = query.split("&");
@@ -107,6 +125,9 @@
                 if (messageData.indexOf("PRIVMSG") !== -1) {
                     var nickMatch = messageData.match(/display-name=([^;]+)/);
                     var userName = nickMatch && nickMatch[1] ? nickMatch[1] : "Anon";
+
+                    var colorMatch = messageData.match(/color=#([0-9A-Fa-f]{6})/);
+                    var userColor = colorMatch && colorMatch[1] ? "#" + colorMatch[1] : "#a970ff";
                     
                     var msgParts = messageData.split("PRIVMSG #" + targetChannel + " :");
                     if (msgParts.length > 1) {
@@ -117,10 +138,17 @@
                         
                         var cleanMessage = userMessage.replace(/</g, "&lt;").replace(/>/g, "&gt;");
                         
-                        msgDiv.innerHTML = '<span class="user">' + userName + ': </span>' + cleanMessage;
+                        msgDiv.innerHTML = '<span class="user" style="color:' + userColor + ';">' + userName + '</span>' +
+                                           '<span class="separator">:</span>' +
+                                           '<span class="text">' + cleanMessage + '</span>';
                         
                         chatContainer.appendChild(msgDiv);
-                        window.scrollTo(0, document.body.scrollHeight);
+
+                        while (chatContainer.children.length > MAX_MESSAGES) {
+                            chatContainer.removeChild(chatContainer.firstChild);
+                        }
+
+                        window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
                     }
                 }
             };
