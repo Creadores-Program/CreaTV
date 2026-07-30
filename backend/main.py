@@ -2,7 +2,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import streamlink
+from streamlink.exceptions import StreamlinkError, PluginError, NoPluginError
 from typing import Optional
+
 app = FastAPI()
 
 app.add_middleware(
@@ -12,6 +14,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 class CreaTVRequest(BaseModel):
     platform: Optional[str] = None
     creator: Optional[str] = None
@@ -32,7 +35,7 @@ def get_stream_url(data: CreaTVRequest):
         elif plat == "youtube":
             target_url = f"https://www.youtube.com/@{data.creator}/live"
         else:
-            raise HTTPException(status_code=400, detail="Error: Platform no found")
+            raise HTTPException(status_code=400, detail="Error: Platform not found")
     else:
         raise HTTPException(
             status_code=400, 
@@ -42,10 +45,10 @@ def get_stream_url(data: CreaTVRequest):
     try:
         session = streamlink.Streamlink()
         session.set_option("http-headers", {
-            "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36"
+            "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Mobile Safari/537.36"
         })
 
-        if "youtube" in target_url or "youtu.be":
+        if "youtube" in target_url or "youtu.be" in target_url:
             session.set_option("youtube-player-client", "android")
         
         streams = session.streams(target_url)
@@ -53,7 +56,7 @@ def get_stream_url(data: CreaTVRequest):
         if not streams:
             raise HTTPException(
                 status_code=404, 
-                detail=f"No Streams for {target_url}"
+                detail=f"No Streams available for {target_url}"
             )
 
         result = {
@@ -63,11 +66,18 @@ def get_stream_url(data: CreaTVRequest):
         
         return result
 
-    except streamlink.exceptions.NoPluginError:
+    except NoPluginError:
         raise HTTPException(
             status_code=400, 
-            detail="Streamlink no found plugin"
+            detail="No streamlink plugin found for this URL"
         )
+    except (PluginError, StreamlinkError) as e:
+        raise HTTPException(
+            status_code=404, 
+            detail=f"Stream offline or unreachable: {str(e)}"
+        )
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error process stream: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
     
