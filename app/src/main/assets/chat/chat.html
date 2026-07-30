@@ -189,7 +189,7 @@
 
             for (var k = 0; k < emoteList.length; k++) {
                 var e = emoteList[k];
-                var emoteUrl = "https://static-cdn.jtvnw.net/emoticons/v2/" + e.id + "/default/dark/1.0";
+                var emoteUrl = "https://static-cdn.jtvnw.net/emoticons/v2/" + e.id + "/static/dark/1.0";
                 var imgTag = '<img class="chat-emote" src="' + emoteUrl + '" />';
                 
                 message = message.substring(0, e.start) + imgTag + message.substring(e.end + 1);
