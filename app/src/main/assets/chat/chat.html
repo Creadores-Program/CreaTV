@@ -208,17 +208,25 @@
 
             return message;
         }
+        var badgeUrls = {
+            broadcaster: "https://static-cdn.jtvnw.net/badges/v1/bf6d6579-ab02-4f0a-9f64-a51c37040858/1",
+            moderator: "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1",
+            vip: "https://static-cdn.jtvnw.net/badges/v1/b817aba4-fad8-49e2-b88a-7cc744dfa6ec/1",
+            subscriber: "https://static-cdn.jtvnw.net/badges/v1/5d9f2208-5dd8-11e7-8513-2ff4adfae661/1",
+            premium: "https://static-cdn.jtvnw.net/badges/v1/bbbe0db0-a598-423e-86d0-f9fb98ca1933/1",
+            turbo: "https://static-cdn.jtvnw.net/badges/v1/bd444ec6-8f34-4bf9-91f4-af1e3428d80f/1",
+            "artist-badge": "https://static-cdn.jtvnw.net/badges/v1/4300a897-03dc-4e83-8c0e-c332fee7057f/1",
+            founder: "https://static-cdn.jtvnw.net/badges/v1/511b78a9-ab37-472f-9569-457753bbe7d3/1",
+            partner: "https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1",
+            "sub-gifter": "https://static-cdn.jtvnw.net/badges/v1/a5ef6c17-2e5b-4d8f-9b80-2779fd722414/1",
+            bits: "https://static-cdn.jtvnw.net/badges/v1/73b5c3fb-24f9-4a82-a852-2f475b59411c/1",
+            "bot-badge": "https://static-cdn.jtvnw.net/badges/v1/3ffa9565-c35b-4cad-800b-041e60659cf2/1"
+        };
         function parseBadges(rawBadges) {
             if (!rawBadges) return "";
                 var html = "";
                 var badges = rawBadges.split(",");
-                var badgeUrls = {
-                    broadcaster: "https://static-cdn.jtvnw.net/badges/v1/55d7e8d2-3b4e-410f-a414-05e3b64d47e3/1",
-                    moderator: "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1",
-                    vip: "https://static-cdn.jtvnw.net/badges/v1/b817aba4-fad8-49e2-b88a-7cc744dfa6ec/1",
-                    subscriber: "https://static-cdn.jtvnw.net/badges/v1/5d15f2f5-8827-4e8e-a2b3-81e11163798f/1",
-                    premium: "https://static-cdn.jtvnw.net/badges/v1/bbbe0db0-a598-423e-86d0-f9fc968d8aff/1"
-                };
+                
                 for (var i = 0; i < badges.length; i++) {
                     var badgeType = badges[i].split("/")[0];
                     if (badgeUrls[badgeType]) {
