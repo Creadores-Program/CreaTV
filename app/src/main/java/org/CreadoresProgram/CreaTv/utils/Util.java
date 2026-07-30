@@ -152,7 +152,7 @@ public class Util{
                 throw new IOException("Unexpected code " + response);
             }
             JSONObject resJson = new JSONObject(responseBodyStr);
-            if (!response.isSuccessful()) throw new IOException("Error: " + response.code + " : " + resJson.optString("detail", "Unknown"));
+            if (!response.isSuccessful()) throw new IOException("Error: " + response.code() + " : " + resJson.optString("detail", "Unknown"));
             return resJson;
         }finally {
             if (response != null) response.close();
