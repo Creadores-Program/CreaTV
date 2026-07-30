@@ -147,8 +147,13 @@ public class Util{
         Response response = null;
         try{
             response = clientHt.newCall(request).execute();
-            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-            return new JSONObject(response.body().string());
+            String responseBodyStr = response.body() != null ? response.body().string() : "";
+            if(responseBodyStr.isEmpty()){
+                throw new IOException("Unexpected code " + response);
+            }
+            JSONObject resJson = new JSONObject(responseBodyStr);
+            if (!response.isSuccessful()) throw new IOException("Error: " + response.code + " : " + resJson.optString("detail", "Unknown"));
+            return resJson;
         }finally {
             if (response != null) response.close();
         }
