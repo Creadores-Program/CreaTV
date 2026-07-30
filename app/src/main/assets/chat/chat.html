@@ -148,7 +148,11 @@
                             chatContainer.removeChild(chatContainer.firstChild);
                         }
 
-                        window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+                        var nearEnd = (chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight) < 100;
+                        if (nearEnd) {
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                            window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+                        }
                     }
                 }
             };
