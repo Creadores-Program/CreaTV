@@ -61,6 +61,13 @@
             margin: -2px 1px;
         }
 
+        .badge-icon {
+            height: 18px;
+            vertical-align: middle;
+            margin-right: 4px;
+            margin-bottom: 2px;
+        }
+
         :-webkit-scrollbar {
             width: 4px;
         }
@@ -125,6 +132,10 @@
 
                     var colorMatch = messageData.match(/color=#([0-9A-Fa-f]{6})/);
                     var userColor = colorMatch && colorMatch[1] ? "#" + colorMatch[1] : "#a970ff";
+
+                    var badgesMatch = messageData.match(/badges=([^; ]*)/);
+                    var rawBadges = badgesMatch && badgesMatch[1] ? badgesMatch[1] : "";
+                    var badgeHtml = parseBadges(rawBadges);
                     
                     var emotesMatch = messageData.match(/emotes=([^; ]*)/);
                     var rawEmotes = emotesMatch && emotesMatch[1] ? emotesMatch[1] : "";
@@ -145,7 +156,7 @@
                         var msgDiv = document.createElement("div");
                         msgDiv.className = "message";
                         
-                        msgDiv.innerHTML = '<span class="user" style="color:' + userColor + ';">' + userName + '</span>' +
+                        msgDiv.innerHTML = badgeHtml + '<span class="user" style="color:' + userColor + ';">' + userName + '</span>' +
                                            '<span class="separator">:</span>' +
                                            '<span class="text">' + cleanMessage + '</span>';
                         
@@ -196,6 +207,25 @@
             }
 
             return message;
+        }
+        function parseBadges(rawBadges) {
+            if (!rawBadges) return "";
+                var html = "";
+                var badges = rawBadges.split(",");
+                var badgeUrls = {
+                    broadcaster: "https://static-cdn.jtvnw.net/badges/v1/55d7e8d2-3b4e-410f-a414-05e3b64d47e3/1",
+                    moderator: "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1",
+                    vip: "https://static-cdn.jtvnw.net/badges/v1/b817aba4-fad8-49e2-b88a-7cc744dfa6ec/1",
+                    subscriber: "https://static-cdn.jtvnw.net/badges/v1/5d15f2f5-8827-4e8e-a2b3-81e11163798f/1",
+                    premium: "https://static-cdn.jtvnw.net/badges/v1/bbbe0db0-a598-423e-86d0-f9fc968d8aff/1"
+                };
+                for (var i = 0; i < badges.length; i++) {
+                    var badgeType = badges[i].split("/")[0];
+                    if (badgeUrls[badgeType]) {
+                        html += '<img class="badge-icon" src="' + badgeUrls[badgeType] + '" />';
+                }
+            }
+            return html;
         }
     </script>
 </body>
