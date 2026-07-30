@@ -55,6 +55,12 @@
             color: #efeff1;
         }
 
+        .chat-emote {
+            vertical-align: middle;
+            height: 24px;
+            margin: -2px 1px;
+        }
+
         :-webkit-scrollbar {
             width: 4px;
         }
@@ -120,17 +126,24 @@
                     var colorMatch = messageData.match(/color=#([0-9A-Fa-f]{6})/);
                     var userColor = colorMatch && colorMatch[1] ? "#" + colorMatch[1] : "#a970ff";
                     
+                    var emotesMatch = messageData.match(/emotes=([^; ]*)/);
+                    var rawEmotes = emotesMatch && emotesMatch[1] ? emotesMatch[1] : "";
+
                     var msgParts = messageData.split("PRIVMSG #" + targetChannel + " :");
                     if (msgParts.length > 1) {
                         var userMessage = msgParts[1];
+
+                        var cleanMessage = userMessage.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+                        if (rawEmotes) {
+                            cleanMessage = parseTwitchEmotes(cleanMessage, rawEmotes);
+                        }
 
                         var distanceToBottom = chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight;
                         var nearEnd = distanceToBottom < 120;
 
                         var msgDiv = document.createElement("div");
                         msgDiv.className = "message";
-                        
-                        var cleanMessage = userMessage.replace(/</g, "&lt;").replace(/>/g, "&gt;");
                         
                         msgDiv.innerHTML = '<span class="user" style="color:' + userColor + ';">' + userName + '</span>' +
                                            '<span class="separator">:</span>' +
@@ -148,6 +161,41 @@
                     }
                 }
             };
+        }
+
+        function parseTwitchEmotes(message, rawEmotes) {
+            var emoteList = [];
+
+            var emoteGroups = rawEmotes.split("/");
+            for (var i = 0; i < emoteGroups.length; i++) {
+                var parts = emoteGroups[i].split(":");
+                var emoteId = parts[0];
+                if (!parts[1]) continue;
+
+                var positions = parts[1].split(",");
+                for (var j = 0; j < positions.length; j++) {
+                    var pos = positions[j].split("-");
+                    emoteList.push({
+                        id: emoteId,
+                        start: parseInt(pos[0], 10),
+                        end: parseInt(pos[1], 10)
+                    });
+                }
+            }
+
+            emoteList.sort(function(a, b) {
+                return b.start - a.start;
+            });
+
+            for (var k = 0; k < emoteList.length; k++) {
+                var e = emoteList[k];
+                var emoteUrl = "https://static-cdn.jtvnw.net/emoticons/v2/" + e.id + "/default/dark/1.0";
+                var imgTag = '<img class="chat-emote" src="' + emoteUrl + '" />';
+                
+                message = message.substring(0, e.start) + imgTag + message.substring(e.end + 1);
+            }
+
+            return message;
         }
     </script>
 </body>
