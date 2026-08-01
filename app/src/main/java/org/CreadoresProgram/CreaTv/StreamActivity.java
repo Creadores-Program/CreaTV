@@ -22,7 +22,7 @@ public class StreamActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_loading);
-        String urlTarget = (getIntent().getData() != null) ? getIntent().getData().toString() : getIntent().getExtras().getString(Util.STREAMURL);
+        String urlTarget = (getIntent().getData() != null) ? getIntent().getData().toString() : getIntent().getStringExtra(Util.STREAMURL);
         if(urlTarget == null){
             finish();
             return;
@@ -32,7 +32,7 @@ public class StreamActivity extends Activity {
             public void run() {
                 try{
                     JSONObject data = Util.getVideoLink(urlTarget);
-                    String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getExtras().getString(Util.QUALITY) : "link_worst";
+                    String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getStringExtra(Util.QUALITY) : "link_worst";
                     final String linkVideo = data.getString(linkN);
                     if(linkVideo == null){
                         runOnUiThread(new Runnable() {
@@ -55,7 +55,7 @@ public class StreamActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(getIntent().hasExtra(Util.ONCHAT)){
+                            if(getIntent().getBooleanExtra(Util.ONCHAT, false)){
                                 String creator = Util.getCreatorName(Uri.parse(urlTarget));
                                 if(creator != null){
                                     Intent cintent = new Intent(StreamActivity.this, ChatActivity.class);
