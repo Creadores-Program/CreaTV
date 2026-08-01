@@ -22,7 +22,7 @@ public class ChatActivity extends Activity {
         setContentView(R.layout.layout_main);
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
-        webView.loadUrl("file:///android_asset/chat/chat.html?channel="+getIntent().getExtras().getString(Util.CREATORNAME));
+        webView.loadUrl("file:///android_asset/chat/chat.html?channel="+getIntent().getStringExtra(Util.CREATORNAME));
     }
     @Override
     protected void onPause(){
