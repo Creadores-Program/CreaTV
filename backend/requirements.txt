@@ -2,4 +2,3 @@ fastapi
 uvicorn
 pydantic
 streamlink
-yt_dlp
