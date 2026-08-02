@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        * {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #0e0e10;
+            color: #efeff1;
+            font-family: "Inter", "Roobert", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 13px;
+        }
+
+        #chat {
+            padding: 8px 10px;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: #0e0e10;
+            -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .message {
+            margin-bottom: 6px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            word-break: break-word;
+            -webkit-hyphens: auto;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .user {
+            font-weight: 700;
+            color: #a970ff;
+            margin-right: 4px;
+        }
+
+        .separator {
+            color: #adadb8;
+            margin-right: 4px;
+        }
+
+        .text {
+            color: #efeff1;
+        }
+
+        .chat-emote {
+            vertical-align: middle;
+            height: 24px;
+            margin: -2px 1px;
+        }
+
+        .badge-icon {
+            height: 18px;
+            vertical-align: middle;
+            margin-right: 4px;
+            margin-bottom: 2px;
+        }
+
+        :-webkit-scrollbar {
+            width: 4px;
+        }
+        :-webkit-scrollbar-track {
+            background: #0e0e10;
+        }
+        :-webkit-scrollbar-thumb {
+            background: #26262c;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+        }
+        :-webkit-scrollbar-thumb:hover {
+            background: #3a3a44;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat"></div>
+
+    <script>
+        if (!String.prototype.startsWith) {
+            String.prototype.startsWith = function(search, pos) {
+                pos = pos || 0;
+                return this.substring(pos, pos + search.length) === search;
+            };
+        }
+        if (!String.prototype.trim) {
+            String.prototype.trim = function() {
+                return this.replace(/^\s+|\s+$/g, '');
+            };
+        }
+        var MAX_MESSAGES = 75;
+
+        function getQueryParam(param) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == param) { return decodeURIComponent(pair[1]); }
+            }
+            return null;
+        }
+
+        var channel = getQueryParam("channel");
+
+        if (channel && channel.trim() !== "" && channel !== "null" && channel !== "undefined") {
+            channel = channel.trim().toLowerCase();
+            startChat(channel);
+        }
+
+        function startChat(targetChannel) {
+            var chatContainer = document.getElementById("chat");
+            var ws = new WebSocket("wss://irc-ws.chat.twitch.tv:443");
+
+            ws.onopen = function() {
+                ws.send("CAP REQ :twitch.tv/tags twitch.tv/commands\r\n");
+                ws.send("PASS SCHMOOPIIE\r\n");
+                ws.send("NICK justinfan" + Math.floor(10000 + Math.random() * 90000) + "\r\n");
+                ws.send("JOIN #" + targetChannel + "\r\n");
+            };
+
+            ws.onmessage = function(event) {
+                var messageData = event.data;
+
+                if (messageData.indexOf("PING") === 0) {
+                    ws.send("PONG :tmi.twitch.tv\r\n");
+                    return;
+                }
+
+                if (messageData.indexOf("PRIVMSG") !== -1) {
+                    var nickMatch = messageData.match(/display-name=([^;]+)/);
+                    var userName = nickMatch && nickMatch[1] ? nickMatch[1] : "Anon";
+
+                    var colorMatch = messageData.match(/color=#([0-9A-Fa-f]{6})/);
+                    var userColor = colorMatch && colorMatch[1] ? "#" + colorMatch[1] : "#a970ff";
+
+                    var badgesMatch = messageData.match(/badges=([^; ]*)/);
+                    var rawBadges = badgesMatch && badgesMatch[1] ? badgesMatch[1] : "";
+                    var badgeHtml = parseBadges(rawBadges);
+                    
+                    var emotesMatch = messageData.match(/emotes=([^; ]*)/);
+                    var rawEmotes = emotesMatch && emotesMatch[1] ? emotesMatch[1] : "";
+
+                    var msgParts = messageData.split("PRIVMSG #" + targetChannel + " :");
+                    if (msgParts.length > 1) {
+                        var userMessage = msgParts[1];
+
+                        var cleanMessage = userMessage.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+                        if (rawEmotes) {
+                            cleanMessage = parseTwitchEmotes(cleanMessage, rawEmotes);
+                        }
+
+                        var distanceToBottom = chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight;
+                        var nearEnd = distanceToBottom < 120;
+
+                        var msgDiv = document.createElement("div");
+                        msgDiv.className = "message";
+                        
+                        msgDiv.innerHTML = badgeHtml + '<span class="user" style="color:' + userColor + ';">' + userName + '</span>' +
+                                           '<span class="separator">:</span>' +
+                                           '<span class="text">' + cleanMessage + '</span>';
+                        
+                        chatContainer.appendChild(msgDiv);
+
+                        while (chatContainer.children.length > MAX_MESSAGES) {
+                            chatContainer.removeChild(chatContainer.firstChild);
+                        }
+
+                        if (nearEnd) {
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                        }
+                    }
+                }
+            };
+        }
+
+        function parseTwitchEmotes(message, rawEmotes) {
+            var emoteList = [];
+
+            var emoteGroups = rawEmotes.split("/");
+            for (var i = 0; i < emoteGroups.length; i++) {
+                var parts = emoteGroups[i].split(":");
+                var emoteId = parts[0];
+                if (!parts[1]) continue;
+
+                var positions = parts[1].split(",");
+                for (var j = 0; j < positions.length; j++) {
+                    var pos = positions[j].split("-");
+                    emoteList.push({
+                        id: emoteId,
+                        start: parseInt(pos[0], 10),
+                        end: parseInt(pos[1], 10)
+                    });
+                }
+            }
+
+            emoteList.sort(function(a, b) {
+                return b.start - a.start;
+            });
+
+            for (var k = 0; k < emoteList.length; k++) {
+                var e = emoteList[k];
+                var emoteUrl = "https://static-cdn.jtvnw.net/emoticons/v2/" + e.id + "/static/dark/1.0";
+                var imgTag = '<img class="chat-emote" src="' + emoteUrl + '" />';
+                
+                message = message.substring(0, e.start) + imgTag + message.substring(e.end + 1);
+            }
+
+            return message;
+        }
+        var badgeUrls = {
+            broadcaster: "https://static-cdn.jtvnw.net/badges/v1/bf6d6579-ab02-4f0a-9f64-a51c37040858/1",
+            moderator: "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1",
+            vip: "https://static-cdn.jtvnw.net/badges/v1/b817aba4-fad8-49e2-b88a-7cc744dfa6ec/1",
+            subscriber: "https://static-cdn.jtvnw.net/badges/v1/5d9f2208-5dd8-11e7-8513-2ff4adfae661/1",
+            premium: "https://static-cdn.jtvnw.net/badges/v1/bbbe0db0-a598-423e-86d0-f9fb98ca1933/1",
+            turbo: "https://static-cdn.jtvnw.net/badges/v1/bd444ec6-8f34-4bf9-91f4-af1e3428d80f/1",
+            "artist-badge": "https://static-cdn.jtvnw.net/badges/v1/4300a897-03dc-4e83-8c0e-c332fee7057f/1",
+            founder: "https://static-cdn.jtvnw.net/badges/v1/511b78a9-ab37-472f-9569-457753bbe7d3/1",
+            partner: "https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1",
+            "sub-gifter": "https://static-cdn.jtvnw.net/badges/v1/a5ef6c17-2e5b-4d8f-9b80-2779fd722414/1",
+            bits: "https://static-cdn.jtvnw.net/badges/v1/73b5c3fb-24f9-4a82-a852-2f475b59411c/1",
+            "bot-badge": "https://static-cdn.jtvnw.net/badges/v1/3ffa9565-c35b-4cad-800b-041e60659cf2/1"
+        };
+        function parseBadges(rawBadges) {
+            if (!rawBadges) return "";
+                var html = "";
+                var badges = rawBadges.split(",");
+                
+                for (var i = 0; i < badges.length; i++) {
+                    var badgeType = badges[i].split("/")[0];
+                    if (badgeUrls[badgeType]) {
+                        html += '<img class="badge-icon" src="' + badgeUrls[badgeType] + '" />';
+                }
+            }
+            return html;
+        }
+    </script>
+</body>
+</html>

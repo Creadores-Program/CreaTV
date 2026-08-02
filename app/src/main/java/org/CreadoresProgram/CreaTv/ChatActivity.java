@@ -1,8 +1,11 @@
 package org.CreadoresProgram.CreaTv;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.net.Uri;
+import android.graphics.Color;
 
 import org.CreadoresProgram.CreaTv.utils.Util;
 
@@ -19,7 +22,7 @@ public class ChatActivity extends Activity {
         setContentView(R.layout.layout_main);
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
-        webView.loadUrl("https://nightdev.com/hosted/obschat/?channel="+getIntent().getExtras().getString(Util.CREATORNAME)+"&fade=false");
+        webView.loadUrl("file:///android_asset/chat/chat.html?channel="+getIntent().getStringExtra(Util.CREATORNAME));
     }
     @Override
     protected void onPause(){
@@ -39,13 +42,15 @@ public class ChatActivity extends Activity {
     }
     @Override
     protected void onDestroy() {
-        webView.post(new Runnable(){
-            @Override
-            public void run(){
-                webView.destroy();
-                webView = null;
-            }
-        });
+        if(this.webView != null){
+            webView.post(new Runnable(){
+                @Override
+                public void run(){
+                    webView.destroy();
+                    webView = null;
+                }
+            });
+        }
         super.onDestroy();
     }
 }
