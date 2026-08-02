@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import streamlink
 from streamlink.exceptions import StreamlinkError, PluginError, NoPluginError
+import yt_dlp
 from typing import Optional
 
 app = FastAPI()
@@ -49,7 +50,23 @@ def get_stream_url(data: CreaTVRequest):
         })
 
         if "youtube" in target_url or "youtu.be" in target_url:
-            session.set_option("youtube-player-client", "android")
+            ydl_opts = {'quiet': True, 'format': 'best'}
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(target_url, download=False)
+                hls_url = info['url'] or info.get('manifest_url')
+                if not hls_url and 'formats' in info:
+                    for f in info['formats']:
+                        if f.get('ext') == 'm3u8' or 'm3u8' in f.get('url', ''):
+                            hls_url = f['url']
+                            break
+                
+                if not hls_url:
+                    raise HTTPException(
+                        status_code=404,
+                        detail=f"No Streams available for {target_url}"
+                    )
+
+            target_url = f"hls://{hls_url}"
         
         streams = session.streams(target_url)
 
