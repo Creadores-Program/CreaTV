@@ -52,7 +52,7 @@ def get_stream_url(data: CreaTVRequest):
         if "youtube" in target_url or "youtu.be" in target_url:
             ydl_opts = {
                 'quiet': True,
-                'format': 'best'
+                'format': 'best',
                 'extractor_args': {
                     'youtube': {
                         'player_client': ['tv', 'web_creator', 'ios']
