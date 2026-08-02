@@ -50,7 +50,15 @@ def get_stream_url(data: CreaTVRequest):
         })
 
         if "youtube" in target_url or "youtu.be" in target_url:
-            ydl_opts = {'quiet': True, 'format': 'best'}
+            ydl_opts = {
+                'quiet': True,
+                'format': 'best'
+                'extractor_args': {
+                    'youtube': {
+                        'player_client': ['tv', 'web_creator', 'ios']
+                    }
+                }
+            }
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 info = ydl.extract_info(target_url, download=False)
                 hls_url = info['url'] or info.get('manifest_url')
