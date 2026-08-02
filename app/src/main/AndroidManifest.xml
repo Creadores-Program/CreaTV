@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.CreadoresProgram.CreaTv" android:versionCode="1" android:versionName="1.0.0-beta" android:installLocation="auto">
+    android:versionCode="1" android:versionName="1.0.0-beta" android:installLocation="auto">
     <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="29" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <application android:name="org.CreadoresProgram.CreaTv.CreaTvApp" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
-        <activity android:name="org.CreadoresProgram.CreaTv.MainActivity"
+    <application android:name=".CreaTvApp" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity"
             android:label="@string/app_name" android:exported="true" android:configChanges="orientation|screenSize|keyboardHidden|screenLayout">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.CreadoresProgram.CreaTv.StreamActivity"
+        <activity android:name=".StreamActivity"
             android:label="@string/app_name" android:exported="true" android:configChanges="orientation|screenSize|keyboardHidden|screenLayout" android:theme="@style/Theme.TransparentActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -68,7 +68,7 @@
                 <data android:pathPattern="/@.*/live" />
             </intent-filter>
         </activity>
-        <activity android:name="org.CreadoresProgram.CreaTv.ChatActivity"
+        <activity android:name=".ChatActivity"
             android:label="@string/app_name" android:exported="false" android:configChanges="orientation|screenSize|keyboardHidden|screenLayout" />
     </application>
 </manifest>
