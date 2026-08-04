@@ -10,7 +10,8 @@ import android.graphics.Color;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebChromeClient;
-
+import android.webkit.WebViewClient;
+import android.webkit.WebResourceRequest;
 
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
@@ -123,6 +124,23 @@ public class Util{
     @SuppressWarnings("deprecation")
     public static void configWebView(WebView webView, Activity context){
         webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request){
+                return handleUrlLoading(view, request.getUrl().toString());
+            }
+            @SuppressWarnings("deprecation")
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url){
+                return handleUrlLoading(view, url);
+            }
+            private boolean handleUrlLoading(WebView view, String url){
+                if(url == null || url.startsWith("file:") || url.startsWith("https://creatv.onrender.com")){
+                    return false;
+                }
+                return true;
+            }
+        });
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
