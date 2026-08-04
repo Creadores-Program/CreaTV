@@ -21,7 +21,7 @@ public class YTPlayerActivity extends Activity {
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
         //String htmlCode = Util.readAssetAsString(getAssets(), "youtube/StreamYT.html");
-        webView.loadDataWithBaseURL("https://botstroll.blogspot.com/2026/08/pois.html?v="+videoId);
+        webView.loadUrl("https://botstroll.blogspot.com/2026/08/pois.html?v="+videoId);
     }
 
     @Override
