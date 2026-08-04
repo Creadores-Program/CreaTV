@@ -20,7 +20,8 @@ public class YTPlayerActivity extends Activity {
         setContentView(R.layout.layout_main);
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
-        webView.loadUrl("file:///android_asset/youtube/StreamYT.html?v="+videoId);
+        String htmlCode = Util.readAssetAsString(getAssets(), "youtube/StreamYT.html");
+        webView.loadDataWithBaseURL("https://www.youtube-nocookie.com", htmlCode, "text/html", "UTF-8", "https://www.youtube-nocookie.com?v="+videoId);
     }
 
     @Override
