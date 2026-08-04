@@ -66,7 +66,7 @@ public class Util{
     public static final String STREAMURL = "org.CreadoresProgram.CreaTv.STREAMURL";
     public static final String CREATORNAME = "org.CreadoresProgram.CreaTv.CREATORNAME";
     public static final String ONCHAT = "org.CreadoresProgram.CreaTv.ONCHAT";
-    public static final String YTID = "";
+    public static final String YTID = "org.CreadoresProgram.CreaTv.YTID";
     private static final String userAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36";
     private static final Pattern CANONICAL_PATTERN = Pattern.compile(
         "<link rel=\"canonical\" href=\"https://www.youtube.com/watch\\?v=([a-zA-Z0-9_-]{11})\">"
