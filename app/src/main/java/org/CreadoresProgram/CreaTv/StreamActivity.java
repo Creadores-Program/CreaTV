@@ -27,10 +27,27 @@ public class StreamActivity extends Activity {
             finish();
             return;
         }
+        final Uri uriUrlTarget = Uri.parse(urlTarget);
         Thread networkThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
+                    if(uriUrlTarget.getHost() != null){
+                        String hostYt = uriUrlTarget.getHost().toLowerCase();
+                        if(hostYt.contains("youtube") || hostYt.contains("you.be")){
+                            final String videoId = Util.getYtId(urlTarget);
+                            runOnUiThread(new Runnable(){
+                                @Override
+                                public void run(){
+                                    Intent ytPintent = new Intent(StreamActivity.this, YTPlayerActivity.class);
+                                    ytPintent.putExtra(Util.YTID, videoId);
+                                    ytPintent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    finish();
+                                }
+                            });
+                            return;
+                        }
+                    }
                     JSONObject data = Util.getVideoLink(urlTarget);
                     String linkN = (getIntent().hasExtra(Util.QUALITY)) ? getIntent().getStringExtra(Util.QUALITY) : "link_worst";
                     final String linkVideo = data.getString(linkN);
@@ -56,13 +73,11 @@ public class StreamActivity extends Activity {
                         @Override
                         public void run() {
                             if(getIntent().getBooleanExtra(Util.ONCHAT, false)){
-                                String creator = Util.getCreatorName(Uri.parse(urlTarget));
+                                String creator = Util.getCreatorName(uriUrlTarget);
                                 if(creator != null){
                                     Intent cintent = new Intent(StreamActivity.this, ChatActivity.class);
                                     cintent.putExtra(Util.CREATORNAME, creator);
-                                    cintent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                    cintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    cintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    cintent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(cintent);
                                 }
                             }
