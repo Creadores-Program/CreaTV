@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import streamlink
 from streamlink.exceptions import StreamlinkError, PluginError, NoPluginError
@@ -19,6 +20,10 @@ class CreaTVRequest(BaseModel):
     platform: Optional[str] = None
     creator: Optional[str] = None
     direct_url: Optional[str] = None
+
+@app.get("/youtube-player", response_class=FileResponse)
+def get_youtube_player():
+    return FileResponse("StreamYT.html")
 
 @app.post("/stream-link")
 def get_stream_url(data: CreaTVRequest):

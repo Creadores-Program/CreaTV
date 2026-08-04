@@ -25,6 +25,8 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,6 +66,14 @@ public class Util{
     public static final String STREAMURL = "org.CreadoresProgram.CreaTv.STREAMURL";
     public static final String CREATORNAME = "org.CreadoresProgram.CreaTv.CREATORNAME";
     public static final String ONCHAT = "org.CreadoresProgram.CreaTv.ONCHAT";
+    public static final String YTID = "org.CreadoresProgram.CreaTv.YTID";
+    private static final String userAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36";
+    private static final Pattern CANONICAL_PATTERN = Pattern.compile(
+        "<link rel=\"canonical\" href=\"https://www.youtube.com/watch\\?v=([a-zA-Z0-9_-]{11})\">"
+    );
+    private static final Pattern LIVE_JSON_PATTERN = Pattern.compile(
+        "\"videoId\":\"([a-zA-Z0-9_-]{11})\".*?\"style\":\"LIVE\""
+    );
     public static String readAssetAsString(AssetManager assetManager, String filePath) {
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = null;
@@ -134,15 +144,14 @@ public class Util{
         webSettings.setLoadWithOverviewMode(true);
         webView.setBackgroundColor(Color.BLACK);
     }
-    public static JSONObject getVideoLink(String url) throws Exception{
+    public static JSONObject getVideoLink(String url) throws Exception {
         JSONObject reqD = new JSONObject();
         reqD.put("direct_url", url);
         RequestBody body = RequestBody.create(JSONHt, reqD.toString());
         Request request = new Request.Builder()
                 .url(proxy)
                 .post(body)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36")
+                .addHeader("User-Agent", userAgent)
                 .build(); 
         Response response = null;
         try{
@@ -157,6 +166,32 @@ public class Util{
         }finally {
             if (response != null) response.close();
         }
+    }
+    public static String getYtId(String url) throws Exception {
+        Request request = new Request.Builder()
+            .url(url)
+            .addHeader("User-Agent", userAgent)
+            .addHeader("Accept-Language", "es-ES,es;q=0.9,en;q=0.8")
+            .build();
+        Response response = null;
+        try{
+            response = clientHt.newCall(request).execute();
+            String responseBodyStr = response.body() != null ? response.body().string() : "";
+            if(responseBodyStr.isEmpty()){
+                throw new IOException("Unexpected code " + response);
+            }
+            Matcher matcherCanonical = CANONICAL_PATTERN.matcher(responseBodyStr);
+            if (matcherCanonical.find()) {
+                return matcherCanonical.group(1);
+            }
+            Matcher matcherJson = LIVE_JSON_PATTERN.matcher(responseBodyStr);
+            if (matcherJson.find()) {
+                return matcherJson.group(1);
+            }
+        }finally{
+            if(response != null) response.close();
+        }
+        return null;
     }
     public static String getCreatorName(Uri uri){
         if (uri == null) return null;
