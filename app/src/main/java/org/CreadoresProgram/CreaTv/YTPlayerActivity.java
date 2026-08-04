@@ -12,10 +12,15 @@ public class YTPlayerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        String videoId = getIntent().getStringExtra(Util.YTID);
+        if(videoId == null || videoId.isEmpty()){
+            finish();
+            return;
+        }
         setContentView(R.layout.layout_main);
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
-        webView.loadUrl("file:///android_asset/youtube/StreamYT.html");
+        webView.loadUrl("file:///android_asset/youtube/StreamYT.html?v="+videoId);
     }
 
     @Override
