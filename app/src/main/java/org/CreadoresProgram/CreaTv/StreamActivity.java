@@ -42,6 +42,7 @@ public class StreamActivity extends Activity {
                                     Intent ytPintent = new Intent(StreamActivity.this, YTPlayerActivity.class);
                                     ytPintent.putExtra(Util.YTID, videoId);
                                     ytPintent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(ytPintent);
                                     finish();
                                 }
                             });
