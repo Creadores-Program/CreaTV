@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="referrer" content="no-referrer-when-downgrade">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>YouTube Stream Player</title>
   <style type="text/css">
@@ -22,11 +22,6 @@
       height: 100%;
     }
 
-    #player-wrapper iframe, #ytplayer {
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
   </style>
 </head>
 <body>
@@ -49,20 +44,6 @@
 
     var videoIdFromUrl = getQueryParam("v");
 
-    if (videoIdFromUrl) {
-      var iframeUrl = "https://www.youtube-nocookie.com/embed/" + videoIdFromUrl + 
-                      "?autoplay=1" +
-                      "&controls=1" +
-                      "&playsinline=1" +
-                      "&rel=0" +
-                      "&enablejsapi=1" +
-                      "&origin=https://www.youtube-nocookie.com";
-
-      var container = document.getElementById("player-wrapper");
-      container.innerHTML = '<iframe id="ytplayer" type="text/html" src="' + iframeUrl + '" ' +
-                            'frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
-    }
-
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -70,11 +51,18 @@
 
     var player;
     function onYouTubeIframeAPIReady() {
-      if (videoIdFromUrl && typeof YT !== 'undefined' && YT.Player) {
+      if (videoIdFromUrl) {
         player = new YT.Player('ytplayer', {
-          events: {
-            'onReady': function(event) {
-            }
+          width: '100%',
+          height: '100%',
+          videoId: videoIdFromUrl,
+          host: 'https://www.youtube-nocookie.com',
+          playerVars: {
+            'autoplay': 1,
+            'controls': 1,
+            'playsinline': 1,
+            'rel': 0,
+            'origin': 'https://www.youtube-nocookie.com'
           }
         });
       }
