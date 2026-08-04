@@ -111,9 +111,7 @@ public class Util{
                     if(openChat){
                         intent.putExtra(ONCHAT, openChat);
                     }
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     context.startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
