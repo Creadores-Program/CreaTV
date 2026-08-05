@@ -232,3 +232,17 @@ window.onload = function() {
   }
   document.body.style.opacity = "1";
 };
+function toggleAboutMenu() {
+    var content = document.getElementById("about-content");
+    var icon = document.getElementById("about-icon");
+
+    if (!content) return;
+
+    if (content.className.indexOf("about-expanded") > -1) {
+        content.className = "about-body about-collapsed";
+        if (icon) icon.innerHTML = "▼";
+    } else {
+        content.className = "about-body about-expanded";
+        if (icon) icon.innerHTML = "▲";
+    }
+}

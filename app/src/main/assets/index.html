@@ -99,9 +99,26 @@
 
         </form>
       </section>
+      <section class="about-accordion">
+        <button id="about-toggle-btn" class="about-header-btn" onclick="toggleAboutMenu()">
+          <span langId="acercaDe"></span>
+          <span id="about-icon" class="about-icon">▼</span>
+        </button>
 
+        <div id="about-content" class="about-body about-collapsed">
+          <div class="about-inner">
+            <p class="about-text-bold">CreaTV</p>
+            <p class="about-text-sub" langId="hechoCreaPro"></p>
+
+            <div class="about-links">
+              <button langId="pruebaNotPipe" class="about-link-btn" onclick="Android.openUrl('https://github.com/gohoski/notPipe')"></button>
+
+              <button langId="verGithub" class="about-link-btn" onclick="Android.openUrl('https://github.com/Creadores-Program/CreaTV')"></button>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
-
   </div>
 </body>
 </html>
