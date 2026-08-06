@@ -3,6 +3,7 @@
 <head>
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, height=device-heiht initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <title>YouTube Stream Player</title>
   <style type="text/css">
     html, body {
@@ -35,19 +36,31 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 70px;
-      height: 70px;
-      margin-top: -35px;
-      margin-left: -35px;
+      width: 16vmin;
+      height: 16vmin;
+      min-width: 60px;
+      min-height: 60px;
+      max-width: 120px;
+      max-height: 120px;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
       -webkit-border-radius: 35px;
       border-radius: 35px;
       background-color: #000000;
       background-color: rgba(0, 0, 0, 0.6);
       border: 2px solid #ffffff;
       color: #ffffff;
-      font-size: 24px;
-      line-height: 66px;
-      text-align: center;
+      font-size: 6vmin;
+      line-height: 1;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      align-items: center;
       cursor: pointer;
       outline: none;
       -webkit-transition: opacity 0.3s ease, -webkit-transform 0.2s ease;
@@ -59,34 +72,30 @@
 
     .play-pause-btn:hover {
       background-color: rgba(0, 0, 0, 0.85);
-      -webkit-transform: scale(1.1);
-      transform: scale(1.1);
+      -webkit-transform: translate(-50%, -50%) scale(1.1);
+      transform: translate(-50%, -50%) scale(1.1);
     }
 
     .play-pause-btn:active {
       background-color: rgba(255, 255, 255, 0.3);
-      -webkit-transform: scale(0.95);
-      transform: scale(0.95);
+      -webkit-transform: translate(-50%, -50%) scale(0.95);
+      transform: translate(-50%, -50%) scale(0.95);
     }
 
-    .controls-overlay.playing .play-pause-btn {
+    .controls-overlay.controls-hidden .play-pause-btn {
       filter: alpha(opacity=0);
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
     }
 
-    #player-wrapper:hover .controls-overlay.playing .play-pause-btn {
-      filter: alpha(opacity=100);
-      opacity: 1;
-      visibility: visible;
-    }
   </style>
 </head>
 <body>
   <div id="player-wrapper">
     <div id="ytplayer"></div>
     <div class="controls-overlay" id="overlay">
-      <button class="play-pause-btn" id="togglePlayBtn" type="button">▶</button>
+      <button class="play-pause-btn" id="togglePlayBtn" type="button">&#9654;</button>
     </div>
   </div>
 
@@ -135,6 +144,8 @@
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     var player;
+    var hideTimeout = null;
+    var overlay = document.getElementById("overlay");
     function onYouTubeIframeAPIReady() {
       if (videoIdFromUrl) {
         player = new YT.Player('ytplayer', {
@@ -156,16 +167,38 @@
         });
       }
     }
+    function showControls() {
+      removeClass(overlay, "controls-hidden");
+      clearTimeout(hideTimeout);
+
+      if (player && player.getPlayerState && player.getPlayerState() === YT.PlayerState.PLAYING) {
+        hideTimeout = setTimeout(function() {
+          addClass(overlay, "controls-hidden");
+        }, 3000);
+      }
+    }
     function onPlayerStateChange(event) {
       if (event.data === YT.PlayerState.PLAYING) {
         btn.innerHTML = "&#10074;&#10074;";
-        addClass(overlay, "playing");
+        showControls();
       } else {
         btn.innerHTML = "&#9654;";
-        removeClass(overlay, "playing");
+        clearTimeout(hideTimeout);
+        removeClass(overlay, "controls-hidden");
       }
     }
     document.getElementById("togglePlayBtn").onclick = function(){
+      if (!player || typeof player.getPlayerState !== 'function') return;
+      var state = player.getPlayerState();
+      if (state === YT.PlayerState.PLAYING) {
+        player.pauseVideo();
+      } else {
+        player.playVideo();
+      }
+    };
+    overlay.onmousemove = showControls;
+    overlay.onclick = function() {
+      showControls();
       if (!player || typeof player.getPlayerState !== 'function') return;
       var state = player.getPlayerState();
       if (state === YT.PlayerState.PLAYING) {
