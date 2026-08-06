@@ -36,7 +36,8 @@ window.onload = function() {
     { name: 'Carlos Feria (Entertainment)', platform: 'tiktok', tag: 'carlosferia4' },
     { name: 'El Magnum! (Minecraft, Roblox, Games)', platform: 'tiktok', tag: 'magnumyoutube' },
     { name: 'El Magnum (Minecraft, Roblox, Games)', platform: 'youtube', tag: 'ElMagnum' },
-    { name: 'Plech (Roblox, Minecraft, Games)', platform: 'youtube', tag: 'Plech' }
+    { name: 'Plech (Roblox, Minecraft, Games)', platform: 'youtube', tag: 'Plech' },
+    { name: 'xQc (Games)', platform: 'kick', tag: 'xqc' }
   ];
 
   var platformBaseUrls = {
