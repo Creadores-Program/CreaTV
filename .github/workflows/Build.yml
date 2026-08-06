@@ -3,11 +3,11 @@ name: Build CI
 on:
   push:
     paths-ignore:
-      - 'README.md'
+      - 'README.m'
       - 'backend/**'
   pull_request:
     paths-ignore:
-      - 'README.md'
+      - 'README.m'
       - 'backend/**'
 jobs:
   build:
