@@ -33,7 +33,9 @@ window.onload = function() {
     { name: 'El Rubius (Gaming, Variety)', platform: 'twitch', tag: 'elrubius' },
     { name: 'Khaby Lame (Humor)', platform: 'tiktok', tag: 'khaby.lame' },
     { name: 'Alexis Omman (Challenges and Gifts)', platform: 'tiktok', tag: 'alexisomman' },
-    { name: 'Carlos Feria (Entertainment)', platform: 'tiktok', tag: 'carlosferia4' }
+    { name: 'Carlos Feria (Entertainment)', platform: 'tiktok', tag: 'carlosferia4' },
+    { name: 'El Magnum! (Minecraft, Roblox, Games)', platform: 'tiktok', tag: 'magnumyoutube' },
+    { name: 'El Magnum (Minecraft, Roblox, Games)', platform: 'youtube', tag: 'ElMagnum' }
   ];
 
   var platformBaseUrls = {
