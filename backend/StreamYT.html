@@ -150,7 +150,6 @@
       removeClass(overlay, "controls-hidden");
       clearTimeout(hideTimeout);
 
-
       if (player && player.getPlayerState && player.getPlayerState() === YT.PlayerState.PLAYING) {
         hideTimeout = setTimeout(function() {
           addClass(overlay, "controls-hidden");
@@ -181,8 +180,7 @@
             'rel': 0,
             'showinfo': 0,
             'modestbranding': 1,
-            'enablejsapi': 1,
-            'origin': 'https://www.youtube-nocookie.com'
+            'enablejsapi': 1
           },
           events: {
             'onStateChange': onPlayerStateChange
