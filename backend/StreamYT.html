@@ -144,8 +144,10 @@
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     var player;
-    var hideTimeout = null;
     var overlay = document.getElementById("overlay");
+    var btn = document.getElementById("togglePlayBtn");
+    var hideTimeout = null;
+    var checkInterval = null;
     function showControls() {
       removeClass(overlay, "controls-hidden");
       clearTimeout(hideTimeout);
@@ -154,6 +156,22 @@
         hideTimeout = setTimeout(function() {
           addClass(overlay, "controls-hidden");
         }, 3000);
+      }
+    }
+    function resetHideTimer() {
+      clearTimeout(hideTimeout);
+      removeClass(overlay, "controls-hidden");
+
+      if (player && typeof player.getPlayerState === 'function') {
+        var state = player.getPlayerState();
+        if (state === YT.PlayerState.PLAYING) {
+          btn.innerHTML = "&#10074;&#10074;";
+          hideTimeout = setTimeout(function() {
+            addClass(overlay, "controls-hidden");
+          }, 2500);
+        } else {
+          btn.innerHTML = "&#9654;";
+        }
       }
     }
     function onPlayerStateChange(event) {
@@ -188,17 +206,32 @@
         });
       }
     }
-    overlay.onmousemove = showControls;
-    document.getElementById("togglePlayBtn").onclick = overlay.onclick = function() {
-      showControls();
+    function togglePlayAction(e) {
+      var eventObj = e || window.event;
+      if (eventObj) {
+        if (eventObj.stopPropagation) {
+          eventObj.stopPropagation();
+        } else {
+          eventObj.cancelBubble = true;
+        }
+      }
+      
       if (!player || typeof player.getPlayerState !== 'function') return;
       var state = player.getPlayerState();
+      
       if (state === YT.PlayerState.PLAYING) {
         player.pauseVideo();
+        btn.innerHTML = "&#9654;";
+        clearTimeout(hideTimeout);
+        removeClass(overlay, "controls-hidden");
       } else {
         player.playVideo();
+        btn.innerHTML = "&#10074;&#10074;";
+        resetHideTimer();
       }
-    };
+    }
+    overlay.onmousemove = overlay.ontouchstart = btn.onmousemove = btn.ontouchstart = resetHideTimer;
+    overlay.onclick = btn.onclick = togglePlayAction;
   </script>
 </body>
 </html>
