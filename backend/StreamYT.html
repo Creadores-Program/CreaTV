@@ -146,31 +146,10 @@
     var player;
     var hideTimeout = null;
     var overlay = document.getElementById("overlay");
-    function onYouTubeIframeAPIReady() {
-      if (videoIdFromUrl) {
-        player = new YT.Player('ytplayer', {
-          width: '100%',
-          height: '100%',
-          videoId: videoIdFromUrl,
-          host: 'https://www.youtube-nocookie.com',
-          playerVars: {
-            'autoplay': 1,
-            'controls': 0,
-            'playsinline': 1,
-            'rel': 0,
-            'modestbranding': 1,
-            'enablejsapi': 1,
-            'origin': 'https://www.youtube-nocookie.com'
-          },
-          events: {
-            'onStateChange': onPlayerStateChange
-          }
-        });
-      }
-    }
     function showControls() {
       removeClass(overlay, "controls-hidden");
       clearTimeout(hideTimeout);
+
 
       if (player && player.getPlayerState && player.getPlayerState() === YT.PlayerState.PLAYING) {
         hideTimeout = setTimeout(function() {
@@ -188,17 +167,31 @@
         removeClass(overlay, "controls-hidden");
       }
     }
-    document.getElementById("togglePlayBtn").onclick = function(){
-      if (!player || typeof player.getPlayerState !== 'function') return;
-      var state = player.getPlayerState();
-      if (state === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
-      } else {
-        player.playVideo();
+    function onYouTubeIframeAPIReady() {
+      if (videoIdFromUrl) {
+        player = new YT.Player('ytplayer', {
+          width: '100%',
+          height: '100%',
+          videoId: videoIdFromUrl,
+          host: 'https://www.youtube-nocookie.com',
+          playerVars: {
+            'autoplay': 1,
+            'controls': 0,
+            'playsinline': 1,
+            'rel': 0,
+            'showinfo': 0,
+            'modestbranding': 1,
+            'enablejsapi': 1,
+            'origin': 'https://www.youtube-nocookie.com'
+          },
+          events: {
+            'onStateChange': onPlayerStateChange
+          }
+        });
       }
-    };
+    }
     overlay.onmousemove = showControls;
-    overlay.onclick = function() {
+    document.getElementById("togglePlayBtn").onclick = overlay.onclick = function() {
       showControls();
       if (!player || typeof player.getPlayerState !== 'function') return;
       var state = player.getPlayerState();
