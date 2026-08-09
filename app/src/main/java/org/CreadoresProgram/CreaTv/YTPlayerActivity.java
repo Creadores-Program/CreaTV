@@ -20,8 +20,8 @@ public class YTPlayerActivity extends Activity {
             finish();
             return;
         }
-        setContentView(R.layout.layout_main);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.layout_main);
         applyFull();
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
