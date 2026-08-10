@@ -55,7 +55,7 @@ body {
     min-height: 40px;
     max-height: 90px;
     margin: 0 auto;
-    background-image: url('./loco.png');
+    background-image: url('./logo.png');
     background-repeat: no-repeat;
     background-position: center center;
     -webkit-background-size: contain;
