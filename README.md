@@ -54,6 +54,12 @@ A veces, al reproducir un video de YouTube o al lanzar un stream de otras plataf
 
 ---
 
+## 🎨 Créditos
+
+- **Diseño del Logotipo:** zManuReal_
+
+---
+
 ## 📄 Licencia y Descargo de Responsabilidad
 
 * **Disclaimer:** CreaTV es un cliente no oficial y no está afiliado, patrocinado ni respaldado por Twitch, Kick, TikTok o YouTube/Google.
