@@ -48,9 +48,22 @@ body {
 }
 
 .main-title {
-    font-size: 28px;
-    font-weight: bold;
-    color: #ffffff;
+    width: 60%;
+    min-width: 180px;
+    max-width: 320px;
+    height: 8vh;
+    min-height: 40px;
+    max-height: 90px;
+    margin: 0 auto;
+    background-image: url('./loco.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: contain;
+    background-size: contain;
+    display: block;
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
 }
 
 .subtitle {
