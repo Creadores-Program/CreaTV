@@ -101,6 +101,10 @@
 
   <script type="text/javascript">
     function getQueryParam(param) {
+      if ('URLSearchParams' in window) {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      }
       var query = window.location.search.substring(1);
       var vars = query.split("&");
       for (var i = 0; i < vars.length; i++) {
