@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.view.View;
 import android.view.Window;
+import android.media.AudioManager;
 
 import org.CreadoresProgram.CreaTv.utils.Util;
 
@@ -22,6 +23,17 @@ public class YTPlayerActivity extends Activity {
         }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.layout_main);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(
+            new View.OnSystemUiVisibilityChangeListener() {
+                @Override
+                public void onSystemUiVisibilityChange(int visibility) {
+                    if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                        applyFull();
+                    }
+                }
+            }
+        );
         applyFull();
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);

@@ -52,6 +52,13 @@ A veces, al reproducir un video de YouTube o al lanzar un stream de otras plataf
 ### 2. Rendimiento en Android Antiguo (Android 4.1 - 4.4)
 - En versiones de Android 4.1 a 4.4 (Jelly Bean / KitKat), se puede experimentar **lag, ralentización o errores visuales** al reproducir contenido de **YouTube Live**. Esto se debe a que la `iframe API` de YouTube no está optimizada para la versión antigua de Webview integrada en estos sistemas.
 
+## **Capturas de Pantalla**
+| Capturas | Capturas | Capturas |
+|----------|----------|----------|
+| ![Cap1](./.github/images/Screenshot_2026-08-10-16-52-59.png) | ![Cap2](./.github/images/Screenshot_2026-08-10-16-53-12.png) | ![Cap3](./.github/images/Screenshot_2026-08-10-16-53-17.png) |
+| ![Cap4](./.github/images/Screenshot_2026-08-14-19-52-34.png) | ![Cap5](./.github/images/Screenshot_2026-08-14-21-35-46.png) | ![Cap6](./.github/images/Screenshot_2026-08-14-21-36-14.png) |
+| ![Cap7](./.github/images/Screenshot_2026-08-14-21-37-38.png) |
+
 ---
 
 ## 🎨 Créditos

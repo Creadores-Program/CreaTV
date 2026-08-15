@@ -5,10 +5,12 @@ on:
     paths-ignore:
       - 'README.md'
       - 'backend/**'
+      - '.github/images/**'
   pull_request:
     paths-ignore:
       - 'README.md'
       - 'backend/**'
+      - '.github/images/**'
 jobs:
   build:
     runs-on: ubuntu-latest
