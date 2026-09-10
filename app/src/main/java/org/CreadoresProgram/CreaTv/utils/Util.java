@@ -63,7 +63,6 @@ public class Util{
         .build();
     private static final HttpUrl proxy = HttpUrl.parse("https://creatv.onrender.com/").newBuilder().addPathSegment("stream-link").build();
     private static final MediaType JSONHt = MediaType.parse("application/json; charset=utf-8");
-    public static final String QUALITY = "org.CreadoresProgram.CreaTv.QUALITY";
     public static final String STREAMURL = "org.CreadoresProgram.CreaTv.STREAMURL";
     public static final String CREATORNAME = "org.CreadoresProgram.CreaTv.CREATORNAME";
     public static final String ONCHAT = "org.CreadoresProgram.CreaTv.ONCHAT";
@@ -99,7 +98,7 @@ public class Util{
             }
         }
     }
-    public static void openVideo(final String url, final boolean qualitylow, final boolean openChat, final Activity context){
+    public static void openVideo(final String url, final boolean openChat, final Activity context){
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -107,7 +106,6 @@ public class Util{
                     Intent intent = new Intent(context, org.CreadoresProgram.CreaTv.StreamActivity.class);
                     //intent.setData(Uri.parse(url));
                     intent.putExtra(STREAMURL, url);
-                    intent.putExtra(QUALITY, qualitylow ? "link_worst" : "link_best");
                     if(openChat){
                         intent.putExtra(ONCHAT, openChat);
                     }

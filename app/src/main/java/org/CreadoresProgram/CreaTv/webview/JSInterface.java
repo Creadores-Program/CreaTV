@@ -15,8 +15,8 @@ public class JSInterface{
         this.context = context;
     }
     @JavascriptInterface
-    public void openVideo(String url, boolean qualitylow, boolean openChat){
-        Util.openVideo(url, qualitylow, openChat, context);
+    public void openVideo(String url, boolean openChat){
+        Util.openVideo(url, openChat, context);
     }
     @JavascriptInterface
     public void openUrl(String url){
