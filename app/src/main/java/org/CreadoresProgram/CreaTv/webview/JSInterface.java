@@ -23,7 +23,7 @@ public class JSInterface{
     }
     @JavascriptInterface
     public String getLang(String key){
-        int resId = context.getResources().getIdentifier(stringKey, "string", context.getPackageName());
+        int resId = context.getResources().getIdentifier(key, "string", context.getPackageName());
         if (resId != 0) {
             return context.getString(resId);
         }
