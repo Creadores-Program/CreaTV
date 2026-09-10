@@ -60,6 +60,8 @@ public class Util{
                 .supportsTlsExtensions(true)
                 .build()
         ))
+        .retryOnConnectionFailure(true)
+        .protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1))
         .build();
     private static final HttpUrl proxy = HttpUrl.parse("https://creatv.onrender.com/").newBuilder().addPathSegment("stream-link").build();
     private static final MediaType JSONHt = MediaType.parse("application/json; charset=utf-8");
