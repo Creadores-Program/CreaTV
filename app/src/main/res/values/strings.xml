@@ -9,6 +9,7 @@
     <string name="calidad">Calidad de reproducción:</string>
     <string name="mejorCalidad">Mejor calidad</string>
     <string name="bajaCalidad">Baja calidad</string>
+    <string name="soloaudio">Solo Audio</string>
     <string name="noCreadores">No tienes creadores guardados.</string>
     <string name="abrirChatTwitch">Abrir chat de Twitch</string>
     <string name="acercaDe">Acerca de</string>
