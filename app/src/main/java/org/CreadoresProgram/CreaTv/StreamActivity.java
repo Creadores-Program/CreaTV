@@ -61,9 +61,11 @@ public class StreamActivity extends Activity {
                     }
 
                     final List<String> keysList = new ArrayList<String>();
+                    final List<String> displayList = new ArrayList<String>();
                     Iterator<String> keys = data.keys();
                     while (keys.hasNext()) {
                         keysList.add(keys.next());
+                        displayList.add(getDisplayKey(key));
                     }
 
                     if (keysList.isEmpty()) {
@@ -74,7 +76,7 @@ public class StreamActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            final CharSequence[] options = keysList.toArray(new CharSequence[0]);
+                            final CharSequence[] options = displayList.toArray(new CharSequence[0]);
                             
                             new AlertDialog.Builder(StreamActivity.this, android.R.style.Theme_Holo_Light_Dialog)
                                 .setTitle(R.string.calidad)
@@ -154,5 +156,17 @@ public class StreamActivity extends Activity {
                     .show();
             }
         });
+    }
+    private String getDisplayKey(String key) {
+        switch (key) {
+            case "audio_only":
+                return getString(R.string.soloaudio);
+            case "link_worst":
+                return getString(R.string.bajaCalidad);
+            case "link_best":
+                return getString(R.string.mejorCalidad);
+            default:
+                return key;
+        }
     }
 }
