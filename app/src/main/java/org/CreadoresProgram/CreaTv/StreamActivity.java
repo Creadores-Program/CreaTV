@@ -64,7 +64,8 @@ public class StreamActivity extends Activity {
                     final List<String> displayList = new ArrayList<String>();
                     Iterator<String> keys = data.keys();
                     while (keys.hasNext()) {
-                        keysList.add(keys.next());
+                        String key = keys.next();
+                        keysList.add(key);
                         displayList.add(getDisplayKey(key));
                     }
 
