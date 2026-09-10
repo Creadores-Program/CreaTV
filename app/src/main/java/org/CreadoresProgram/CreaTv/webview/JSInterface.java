@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.webkit.JavascriptInterface;
 import android.net.Uri;
 
-import java.util.Locale;
-
 public class JSInterface{
     private Activity context;
     public JSInterface(Activity context){
@@ -24,15 +22,11 @@ public class JSInterface{
         context.startActivity(intent);
     }
     @JavascriptInterface
-    public String getLangJson(){
-        String lang = Locale.getDefault().getLanguage().toLowerCase();
-        if(!lang.equals("es") && !lang.equals("en") && !lang.equals("it") && !lang.equals("pt") && !lang.equals("fr")){
-            lang = "es";
+    public String getLang(String key){
+        int resId = context.getResources().getIdentifier(stringKey, "string", context.getPackageName());
+        if (resId != 0) {
+            return context.getString(resId);
         }
-        String langJson = Util.readAssetAsString(context.getAssets(), "lang/"+lang+".json");
-        if(langJson == null){
-            return "{}";
-        }
-        return langJson;
+        return "";
     }
 }
