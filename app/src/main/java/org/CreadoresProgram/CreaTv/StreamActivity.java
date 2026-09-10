@@ -77,7 +77,7 @@ public class StreamActivity extends Activity {
                             final CharSequence[] options = keysList.toArray(new CharSequence[0]);
                             
                             new AlertDialog.Builder(StreamActivity.this, android.R.style.Theme_Holo_Light_Dialog)
-                                .setTitle("Selecciona la calidad")
+                                .setTitle(R.string.calidad)
                                 .setItems(options, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
