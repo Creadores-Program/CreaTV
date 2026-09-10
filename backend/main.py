@@ -68,6 +68,11 @@ def get_stream_url(data: CreaTVRequest):
             "link_best": streams["best"].url if "best" in streams else None,
             "link_worst": streams["worst"].url if "worst" in streams else None,
         }
+
+        for key, stream in streams.items():
+            if key not in ("best", "worst"):
+                result[key] = stream.url
+            
         
         return result
 
