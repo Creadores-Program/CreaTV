@@ -49,7 +49,6 @@ window.onload = function() {
 
   var STORAGE_KEY = 'saved_stream_creators';
 
-  var qualitySelect = document.getElementById('stream-quality');
   var featuredContainer = document.getElementById('creadores-destacados');
   var savedContainer = document.getElementById('creadores-guardados');
   
@@ -57,11 +56,6 @@ window.onload = function() {
   var nametagInput = document.getElementById('nametag');
   var saveCheckbox = document.getElementById('save-creator');
   var openChatCheck = document.getElementById('open-chat');
-
-  
-  function isLowQualitySelected() {
-    return qualitySelect.value === 'low';
-  }
 
   function buildStreamUrl(platform, tag) {
     var cleanTag = tag.replace(/^\s+|\s+$/g, '').replace(/^@/, '');
@@ -75,9 +69,8 @@ window.onload = function() {
   }
 
   function openStreamInAndroid(url) {
-    var lowQuality = isLowQualitySelected();
     var openChat = openChatCheck.checked && url.indexOf("twitch") >= 0;
-    Android.openVideo(url, lowQuality, openChat);
+    Android.openVideo(url, openChat);
   }
 
   function creatorExists(array, tag, platform) {
