@@ -87,12 +87,7 @@ public class StreamActivity extends Activity {
                                         launchPlayerAndChat(uriUrlTarget, linkVideo);
                                     }
                                 })
-                                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                    @Override
-                                    public void onCancel(DialogInterface dialog) {
-                                        finish();
-                                    }
-                                })
+                                .setCancelable(false)
                                 .create()
                                 .show();
                         }
