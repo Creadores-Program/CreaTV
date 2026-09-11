@@ -1,5 +1,5 @@
 <resources>
-    <style name="AppTheme" parent="@android:style/Theme.Holo.NoActionBar"></style>
+    <style name="AppTheme" parent="@android:style/Theme.NoTitleBar"></style>
     <style name="Theme.TransparentActivity" parent="@android:style/Theme.Translucent.NoTitleBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
