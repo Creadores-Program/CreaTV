@@ -1,0 +1,27 @@
+<resources>
+    <string name="selecBuscaCreador">Sélectionnez ou recherchez un créateur pour commencer</string>
+    <string name="creadoresDesta">Créateurs en vedette</string>
+    <string name="creadoresGuarda">Créateurs enregistrés</string>
+    <string name="creadorPerson">Créateur personnalisé</string>
+    <string name="selecPlatafor">Sélectionnez la plateforme</string>
+    <string name="guardar">Enregistrer ce créateur dans la liste</string>
+    <string name="ver">Regarder le stream</string>
+    <string name="calidad">Qualité de lecture :</string>
+    <string name="mejorCalidad">Meilleure qualité</string>
+    <string name="bajaCalidad">Basse qualité</string>
+    <string name="soloaudio">Audio uniquement</string>
+    <string name="noCreadores">Vous n\'avez aucun créateur enregistré.</string>
+    <string name="abrirChatTwitch">Ouvrir le chat de Twitch</string>
+    <string name="acercaDe">À propos</string>
+    <string name="hechoCreaPro">Créé par Creadores Program pour les appareils Android</string>
+    <string name="pruebaNotPipe">Essayez NotPipe (Youtube Player android 1.5+)</string>
+    <string name="verGithub">Voir le code source de CreaTV sur Github</string>
+    <string name="githubVersion">Télécharger la dernière version de CreaTV sur Github</string>
+    <string name="noLink">Pas de lien !</string>
+    <string name="nohayLink">Aucun lien fourni !</string>
+    <string name="noCalidad">Aucune qualité vidéo disponible !</string>
+    <string name="errorRed">Erreur réseau !</string>
+    <string name="errorVideoRep">Erreur lors de la lecture de la vidéo !</string>
+    <string name="errorDesc">Une erreur inconnue s\'est produite. Parfois, il suffit d\'essayer 3 fois de plus ! Ou peut-être que votre créateur de contenu n\'est pas en ligne.</string>
+    <string name="linkInvalid">Le lien de la vidéo sélectionnée n\'est pas valide !</string>
+</resources>
