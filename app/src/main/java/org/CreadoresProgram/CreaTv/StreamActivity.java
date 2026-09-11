@@ -56,7 +56,7 @@ public class StreamActivity extends Activity {
                     
                     final JSONObject data = Util.getVideoLink(urlTarget);
                     if (data == null || data.length() == 0) {
-                        showErrorDialog("No Link!", "No link was provided!");
+                        showErrorDialog(getString(R.string.noLink), getString(R.string.nohayLink));
                         return;
                     }
 
@@ -70,7 +70,7 @@ public class StreamActivity extends Activity {
                     }
 
                     if (keysList.isEmpty()) {
-                        showErrorDialog("No Link!", "No video qualities available!");
+                        showErrorDialog(getString(R.string.noLink), getString(R.string.noCalidad));
                         return;
                     }
 
@@ -97,11 +97,11 @@ public class StreamActivity extends Activity {
                     });
 
                 } catch (final IOException e) {
-                    showErrorDialog("Error Network!", e.getMessage());
+                    showErrorDialog(getString(R.string.errorRed), e.getMessage());
                 } catch(Exception e){
                     e.printStackTrace();
-                    Log.e("CreaTv", "Error play Video", e);
-                    showErrorDialog("Error!", "An unknown error occurred. Sometimes just try 3 more times! Or perhaps your content creator isn't online!");
+                    Log.e(getString(R.string.app_name), getString(R.string.errorVideoRep), e);
+                    showErrorDialog("Error!", getString(R.string.errorDesc));
                 }
             }
         });
@@ -110,7 +110,7 @@ public class StreamActivity extends Activity {
 
     private void launchPlayerAndChat(final Uri uriUrlTarget, final String linkVideo) {
         if (linkVideo == null || linkVideo.isEmpty()) {
-            showErrorDialog("No Link!", "Selected video link is invalid!");
+            showErrorDialog(getString(R.string.noLink), getString(R.string.linkInvalid));
             return;
         }
 
