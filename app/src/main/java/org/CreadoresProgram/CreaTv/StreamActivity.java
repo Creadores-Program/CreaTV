@@ -117,6 +117,7 @@ public class StreamActivity extends Activity {
         Runnable launchAction = new Runnable() {
             @Override
             public void run() {
+                if (isActivityDestroyed()) return;
                 if (getIntent().getBooleanExtra(Util.ONCHAT, false)) {
                     String creator = Util.getCreatorName(uriUrlTarget);
                     if (creator != null) {
@@ -144,6 +145,7 @@ public class StreamActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (isActivityDestroyed()) return;
                 new AlertDialog.Builder(StreamActivity.this, android.R.style.Theme_Holo_Light_Dialog)
                     .setTitle(title)
                     .setMessage(message)
