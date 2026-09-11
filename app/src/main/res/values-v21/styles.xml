@@ -1,3 +1,4 @@
 <resources>
     <style name="AppTheme" parent="@android:style/Theme.Material.NoActionBar"></style>
+    <style name="AppDialogTheme" parent="@android:style/Theme.Material.Light.Dialog.Alert"></style>
 </resources>
