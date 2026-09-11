@@ -85,7 +85,7 @@ public class StreamActivity extends Activity {
                                 .setItems(displayList.toArray(new CharSequence[0]), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        String selectedKey = keysList.get(which).toString();
+                                        String selectedKey = keysList.get(which);
                                         String linkVideo = data.optString(selectedKey);
                                         
                                         launchPlayerAndChat(uriUrlTarget, linkVideo);
