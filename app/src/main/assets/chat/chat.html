@@ -99,6 +99,9 @@
                 return this.replace(/^\s+|\s+$/g, '');
             };
         }
+        if(!window.WebSocket){
+            window.WebSocket = window.WebSocket || window.WebKitWebSocket;
+        }
         var MAX_MESSAGES = 75;
 
         function getQueryParam(param) {
