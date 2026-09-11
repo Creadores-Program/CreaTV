@@ -17,4 +17,11 @@
     <string name="pruebaNotPipe">Prueba NotPipe (Youtube Player android 1.5+)</string>
     <string name="verGithub">Ver Código Fuente de CreaTV en Github</string>
     <string name="githubVersion">Descargar la ultima version de CreaTV en Github</string>
+    <string name="noLink">No Link!</string>
+    <string name="nohayLink">No se proporcionó ningún enlace!</string>
+    <string name="noCalidad">No hay calidades de vídeo disponibles!</string>
+    <string name="errorRed">Error de Red!</string>
+    <string name="errorVideoRep">Error al Reproducir el Vídeo!</string>
+    <string name="errorDesc">Se ha producido un error desconocido. ¡A veces basta con intentarlo 3 veces más! O tal vez tu creador de contenido no esté en línea.</string>
+    <string name="linkInvalid">El enlace del vídeo seleccionado no es válido!</string>
 </resources>
