@@ -34,7 +34,7 @@ public class StreamActivity extends Activity {
             return;
         }
 
-        this.themeWrapper = new ContextThemeWrapper(this, R.styles.AppDialogTheme);
+        this.themeWrapper = new ContextThemeWrapper(this, R.style.AppDialogTheme);
         
         final Uri uriUrlTarget = Uri.parse(urlTarget);
         
