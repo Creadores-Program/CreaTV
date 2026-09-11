@@ -5,4 +5,7 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.5</item>
     </style>
+    <style name="AppDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
 </resources>
