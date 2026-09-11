@@ -43,6 +43,7 @@ public class StreamActivity extends Activity {
                             runOnUiThread(new Runnable(){
                                 @Override
                                 public void run(){
+                                    if (isActivityDestroyed()) return;
                                     Intent ytPintent = new Intent(StreamActivity.this, YTPlayerActivity.class);
                                     ytPintent.putExtra(Util.YTID, videoId);
                                     ytPintent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -77,14 +78,13 @@ public class StreamActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            final CharSequence[] options = displayList.toArray(new CharSequence[0]);
-                            
+                            if (isActivityDestroyed()) return;
                             new AlertDialog.Builder(StreamActivity.this, android.R.style.Theme_Holo_Light_Dialog)
                                 .setTitle(R.string.calidad)
-                                .setItems(options, new DialogInterface.OnClickListener() {
+                                .setItems(displayList.toArray(new CharSequence[0]), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        String selectedKey = options[which].toString();
+                                        String selectedKey = keysList.get(which).toString();
                                         String linkVideo = data.optString(selectedKey);
                                         
                                         launchPlayerAndChat(uriUrlTarget, linkVideo);
@@ -169,5 +169,12 @@ public class StreamActivity extends Activity {
             default:
                 return key;
         }
+    }
+    private boolean isActivityDestroyed() {
+        if (isFinishing()) return true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return isDestroyed();
+        }
+        return false;
     }
 }
