@@ -1,0 +1,27 @@
+<resources>
+    <string name="selecBuscaCreador">Seleziona o cerca un creatore per iniziare</string>
+    <string name="creadoresDesta">Creatori in evidenza</string>
+    <string name="creadoresGuarda">Creatori salvati</string>
+    <string name="creadorPerson">Creatore personalizzato</string>
+    <string name="selecPlatafor">Seleziona la piattaforma</string>
+    <string name="guardar">Salva questo creatore nella lista</string>
+    <string name="ver">Guarda lo stream</string>
+    <string name="calidad">Qualità di riproduzione:</string>
+    <string name="mejorCalidad">Migliore qualità</string>
+    <string name="bajaCalidad">Bassa qualità</string>
+    <string name="soloaudio">Solo audio</string>
+    <string name="noCreadores">Non hai creatori salvati.</string>
+    <string name="abrirChatTwitch">Apri la chat di Twitch</string>
+    <string name="acercaDe">A proposito di</string>
+    <string name="hechoCreaPro">Realizzato da Creadores Program per dispositivi Android</string>
+    <string name="pruebaNotPipe">Prova NotPipe (Youtube Player android 1.5+)</string>
+    <string name="verGithub">Visualizza il codice sorgente di CreaTV su Github</string>
+    <string name="githubVersion">Scarica l\'ultima versione di CreaTV su Github</string>
+    <string name="noLink">Nessun link!</string>
+    <string name="nohayLink">Nessun link fornito!</string>
+    <string name="noCalidad">Nessuna qualità video disponibile!</string>
+    <string name="errorRed">Errore di rete!</string>
+    <string name="errorVideoRep">Errore durante la riproduzione del video!</string>
+    <string name="errorDesc">Si è verificato un errore sconosciuto. A volte basta riprovare altre 3 volte! O forse il tuo creator non è online.</string>
+    <string name="linkInvalid">Il link del video selezionato non è valido!</string>
+</resources>
