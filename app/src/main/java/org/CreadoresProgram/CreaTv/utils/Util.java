@@ -146,6 +146,7 @@ public class Util{
         webSettings.setAllowFileAccess(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             webSettings.setAllowContentAccess(true);
+            webSettings.setDisplayZoomControls(false);
         }
         webSettings.setDatabaseEnabled(true);
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2){
@@ -157,7 +158,6 @@ public class Util{
         }
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSettings.setBuiltInZoomControls(false);
-        webSettings.setDisplayZoomControls(false);
         webSettings.setSupportZoom(false);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
