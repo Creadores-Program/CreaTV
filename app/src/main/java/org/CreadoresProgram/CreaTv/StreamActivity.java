@@ -19,6 +19,7 @@ import java.util.List;
 import java.io.IOException;
 
 import org.CreadoresProgram.CreaTv.utils.Util;
+import org.CreadoresProgram.CreaTv.proxy.*;
 
 public class StreamActivity extends Activity {
 
@@ -120,9 +121,13 @@ public class StreamActivity extends Activity {
     }
 
     private void launchPlayerAndChat(final Uri uriUrlTarget, final String linkVideo) {
-        if (linkVideo == null || linkVideo.isEmpty()) {
+        if (linkVideo == null || TextUtils.isEmpty(linkVideo)) {
             showErrorDialog(getString(R.string.noLink), getString(R.string.linkInvalid));
             return;
+        }
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR2 && !ProxyService.isRunning(this)) {
+            Intent intent = new Intent(this, ProxyService.class);
+            startService(intent);
         }
 
         Runnable launchAction = new Runnable() {
@@ -139,7 +144,7 @@ public class StreamActivity extends Activity {
                     }
                 }
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse(linkVideo), "video/*");
+                intent.setDataAndType(Uri.parse((Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR2) ? ProxyServer.buildStreamUrl(linkVideo) : linkVideo), "video/*");
                 startActivity(intent);
                 finish();
             }
