@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
+import org.CreadoresProgram.CreaTv.R;
+
 public class ProxyService extends Service {
 
     public static final String ACTION_STOP = "org.CreadoresProgram.CreaTv.proxy.ACTION_STOP";
