@@ -1,4 +1,3 @@
-window.langPage = JSON.parse(Android.getLangJson());
 if (!String.prototype.startsWith) {
     String.prototype.startsWith = function(search, pos) {
         pos = pos || 0;
@@ -156,7 +155,7 @@ window.onload = function() {
     var saved = savedRaw ? JSON.parse(savedRaw) : [];
 
     if (saved.length === 0) {
-      savedContainer.innerHTML = '<span style="color:#4a4a5a; font-size:0.85rem; font-style:italic;">'+window.langPage.noCreadores+'</span>';
+      savedContainer.innerHTML = '<span style="color:#4a4a5a; font-size:0.85rem; font-style:italic;">'+Android.getLang("noCreadores")+'</span>';
       return;
     }
 
@@ -221,8 +220,9 @@ window.onload = function() {
   for(var idod = 0; idod < elementsQlang.length; idod++){
       var elementQlang = elementsQlang[idod];
       var attrLang = elementQlang.getAttribute("langId");
-      if(window.langPage[attrLang]){
-          elementQlang.textContent = window.langPage[attrLang];
+      var langVal = Android.getLang(attrLang);
+      if(langVal.trim().length > 0){
+          elementQlang.textContent = langVal;
       }else{
           console.warn("Invalid key " + attrLang);
       }

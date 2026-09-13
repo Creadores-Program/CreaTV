@@ -1,0 +1,27 @@
+<resources>
+    <string name="selecBuscaCreador">Select or search for a creator to begin</string>
+    <string name="creadoresDesta">Featured Creators</string>
+    <string name="creadoresGuarda">Saved Creators</string>
+    <string name="creadorPerson">Custom Creator</string>
+    <string name="selecPlatafor">Select Platform</string>
+    <string name="guardar">Save this creator to list</string>
+    <string name="ver">Watch Stream</string>
+    <string name="calidad">Playback quality:</string>
+    <string name="mejorCalidad">Best quality</string>
+    <string name="bajaCalidad">Low quality</string>
+    <string name="soloaudio">Audio Only</string>
+    <string name="noCreadores">You have no saved creators.</string>
+    <string name="abrirChatTwitch">Open Twitch chat</string>
+    <string name="acercaDe">About</string>
+    <string name="hechoCreaPro">Made by Creadores Program for Android devices</string>
+    <string name="pruebaNotPipe">Try NotPipe (Youtube Player android 1.5+)</string>
+    <string name="verGithub">View Source Code of CreaTV on Github</string>
+    <string name="githubVersion">Download the latest version of CreaTV on Github</string>
+    <string name="noLink">No Link!</string>
+    <string name="nohayLink">No link provided!</string>
+    <string name="noCalidad">No video qualities available!</string>
+    <string name="errorRed">Network Error!</string>
+    <string name="errorVideoRep">Error Playing Video!</string>
+    <string name="errorDesc">An unknown error occurred. Sometimes trying 3 more times works! Or maybe your content creator isn\'t online.</string>
+    <string name="linkInvalid">Selected video link is invalid!</string>
+</resources>
