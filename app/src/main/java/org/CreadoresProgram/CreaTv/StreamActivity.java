@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.content.Intent;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.text.TextUtils;
+import android.view.ContextThemeWrapper;
 
 import org.json.JSONObject;
 
@@ -20,6 +22,8 @@ import org.CreadoresProgram.CreaTv.utils.Util;
 
 public class StreamActivity extends Activity {
 
+    private ContextThemeWrapper themeWrapper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -30,6 +34,8 @@ public class StreamActivity extends Activity {
             finish();
             return;
         }
+
+        this.themeWrapper = new ContextThemeWrapper(this, R.style.AppDialogTheme);
         
         final Uri uriUrlTarget = Uri.parse(urlTarget);
         
@@ -41,6 +47,10 @@ public class StreamActivity extends Activity {
                         String hostYt = uriUrlTarget.getHost().toLowerCase();
                         if(hostYt.contains("youtube") || hostYt.contains("you.be")){
                             final String videoId = Util.getYtId(urlTarget);
+                            if (videoId == null || TextUtils.isEmpty(videoId.trim())) {
+                                showErrorDialog(getString(R.string.noLink), getString(R.string.noCalidad));
+                                return;
+                            }
                             runOnUiThread(new Runnable(){
                                 @Override
                                 public void run(){
@@ -80,7 +90,7 @@ public class StreamActivity extends Activity {
                         @Override
                         public void run() {
                             if (isActivityDestroyed()) return;
-                            new AlertDialog.Builder(StreamActivity.this, android.R.style.Theme_Holo_Light_Dialog)
+                            new AlertDialog.Builder(themeWrapper)
                                 .setTitle(R.string.calidad)
                                 .setItems(displayList.toArray(new CharSequence[0]), new DialogInterface.OnClickListener() {
                                     @Override
@@ -147,7 +157,7 @@ public class StreamActivity extends Activity {
             @Override
             public void run() {
                 if (isActivityDestroyed()) return;
-                new AlertDialog.Builder(StreamActivity.this, android.R.style.Theme_Holo_Light_Dialog)
+                new AlertDialog.Builder(themeWrapper)
                     .setTitle(title)
                     .setMessage(message)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

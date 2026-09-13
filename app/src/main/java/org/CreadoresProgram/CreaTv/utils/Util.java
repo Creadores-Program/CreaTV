@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.graphics.Color;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -144,18 +145,20 @@ public class Util{
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setAllowFileAccess(true);
-        webSettings.setAllowContentAccess(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            webSettings.setAllowContentAccess(true);
+            webSettings.setDisplayZoomControls(false);
+        }
         webSettings.setDatabaseEnabled(true);
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2){
-            webSettings.setDatabasePath(context.getApplicationContext().getDir("LocalStorageOld", Context.MODE_PRIVATE).getPath());
-            webView.setDrawingCacheEnabled(false);
+           webSettings.setDatabasePath(context.getApplicationContext().getDir("LocalStorageOld", Context.MODE_PRIVATE).getPath());
+           webView.setDrawingCacheEnabled(false);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             webSettings.setMediaPlaybackRequiresUserGesture(false);
         }
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSettings.setBuiltInZoomControls(false);
-        webSettings.setDisplayZoomControls(false);
         webSettings.setSupportZoom(false);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
@@ -174,7 +177,7 @@ public class Util{
         try{
             response = clientHt.newCall(request).execute();
             String responseBodyStr = response.body() != null ? response.body().string() : "";
-            if(responseBodyStr.isEmpty()){
+            if(TextUtils.isEmpty(responseBodyStr.trim())){
                 throw new IOException("Unexpected code " + response);
             }
             JSONObject resJson = new JSONObject(responseBodyStr);
@@ -194,7 +197,7 @@ public class Util{
         try{
             response = clientHt.newCall(request).execute();
             String responseBodyStr = response.body() != null ? response.body().string() : "";
-            if(responseBodyStr.isEmpty()){
+            if(TextUtils.isEmpty(responseBodyStr.trim())){
                 throw new IOException("Unexpected code " + response);
             }
             Matcher matcherCanonical = CANONICAL_PATTERN.matcher(responseBodyStr);
