@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.graphics.Color;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -176,7 +177,7 @@ public class Util{
         try{
             response = clientHt.newCall(request).execute();
             String responseBodyStr = response.body() != null ? response.body().string() : "";
-            if(responseBodyStr.isEmpty()){
+            if(TextUtils.isEmpty(responseBodyStr.trim())){
                 throw new IOException("Unexpected code " + response);
             }
             JSONObject resJson = new JSONObject(responseBodyStr);
@@ -196,7 +197,7 @@ public class Util{
         try{
             response = clientHt.newCall(request).execute();
             String responseBodyStr = response.body() != null ? response.body().string() : "";
-            if(responseBodyStr.isEmpty()){
+            if(TextUtils.isEmpty(responseBodyStr.trim())){
                 throw new IOException("Unexpected code " + response);
             }
             Matcher matcherCanonical = CANONICAL_PATTERN.matcher(responseBodyStr);
