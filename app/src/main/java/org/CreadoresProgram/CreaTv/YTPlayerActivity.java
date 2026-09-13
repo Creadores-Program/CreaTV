@@ -8,6 +8,7 @@ import android.webkit.WebView;
 import android.view.View;
 import android.view.Window;
 import android.media.AudioManager;
+import android.text.TextUtils;
 
 import org.CreadoresProgram.CreaTv.utils.Util;
 
@@ -18,7 +19,7 @@ public class YTPlayerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         String videoId = getIntent().getStringExtra(Util.YTID);
-        if(videoId == null || videoId.isEmpty()){
+        if(videoId == null || TextUtils.isEmpty(videoId.trim())){
             finish();
             return;
         }
