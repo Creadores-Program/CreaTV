@@ -5,9 +5,12 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 
 import org.CreadoresProgram.CreaTv.R;
+
+import java.lang.reflect.Method;
 
 public class ProxyService extends Service {
 
@@ -41,8 +44,8 @@ public class ProxyService extends Service {
         int icon = android.R.drawable.ic_menu_info_details; 
         CharSequence tickerText = getString(R.string.servicioActivo);
         long when = System.currentTimeMillis();
-
-        Notification notification = new Notification(icon, tickerText, when);
+        CharSequence title = getString(R.string.servicioCreaTv);
+        CharSequence text = getString(R.string.servicioApagar);
 
         Intent stopIntent = new Intent(this, ProxyService.class);
         stopIntent.setAction(ACTION_STOP);
@@ -54,12 +57,33 @@ public class ProxyService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        notification.setLatestEventInfo(
-                this, 
-                getString(R.string.servicioCreaTv), 
-                getString(R.string.servicioApagar), 
-                pendingIntent
-        );
+        Notification notification;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            Notification.Builder builder = new Notification.Builder(this)
+                    .setSmallIcon(icon)
+                    .setTicker(tickerText)
+                    .setWhen(when)
+                    .setContentTitle(title)
+                    .setContentText(text)
+                    .setContentIntent(pendingIntent);
+
+            notification = builder.getNotification();
+        } else {
+            notification = new Notification(icon, tickerText, when);
+            try {
+                Method setLatestEventInfo = Notification.class.getMethod(
+                        "setLatestEventInfo",
+                        Context.class, 
+                        CharSequence.class, 
+                        CharSequence.class, 
+                        PendingIntent.class
+                );
+                setLatestEventInfo.invoke(notification, this, title, text, pendingIntent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         startForeground(NOTIFICATION_ID, notification);
     }
