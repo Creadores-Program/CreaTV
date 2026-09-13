@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.content.Intent;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 
 import org.json.JSONObject;
@@ -46,6 +47,10 @@ public class StreamActivity extends Activity {
                         String hostYt = uriUrlTarget.getHost().toLowerCase();
                         if(hostYt.contains("youtube") || hostYt.contains("you.be")){
                             final String videoId = Util.getYtId(urlTarget);
+                            if (videoId == null || TextUtils.isEmpty(videoId.trim())) {
+                                showErrorDialog(getString(R.string.noLink), getString(R.string.noCalidad));
+                                return;
+                            }
                             runOnUiThread(new Runnable(){
                                 @Override
                                 public void run(){
