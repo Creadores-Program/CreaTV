@@ -165,7 +165,7 @@ public class ProxyServer {
                 line = line.trim();
                 if (!line.startsWith("#") && line.length() > 0) {
                     String absoluteUrl = resolveUrl(baseUrlStr, line);
-                    line = buildVlcUrl(absoluteUrl);
+                    line = buildStreamUrl(absoluteUrl);
                 }
                 writer.print(line + "\r\n");
             }
