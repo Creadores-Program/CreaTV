@@ -24,4 +24,8 @@
     <string name="errorVideoRep">Error al Reproducir el Vídeo!</string>
     <string name="errorDesc">Se ha producido un error desconocido. ¡A veces basta con intentarlo 3 veces más! O tal vez tu creador de contenido no esté en línea.</string>
     <string name="linkInvalid">El enlace del vídeo seleccionado no es válido!</string>
+    <string name="servicioCreaTv">Servicio de CreaTV</string>
+    <string name="servicioApagar">Toca aquí para apagar</string>
+    <string name="servicioActivo">Servicio Stream Activo</string>
+    <string name="servicio">Proxy Stream</string>
 </resources>
