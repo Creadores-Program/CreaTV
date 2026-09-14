@@ -54,7 +54,6 @@ window.onload = function() {
   var customForm = document.getElementById('custom-creator-form');
   var nametagInput = document.getElementById('nametag');
   var saveCheckbox = document.getElementById('save-creator');
-  var openChatCheck = document.getElementById('open-chat');
 
   function buildStreamUrl(platform, tag) {
     var cleanTag = tag.replace(/^\s+|\s+$/g, '').replace(/^@/, '');
@@ -68,8 +67,7 @@ window.onload = function() {
   }
 
   function openStreamInAndroid(url) {
-    var openChat = openChatCheck.checked && url.indexOf("twitch") >= 0;
-    Android.openVideo(url, openChat);
+    Android.openVideo(url);
   }
 
   function creatorExists(array, tag, platform) {
