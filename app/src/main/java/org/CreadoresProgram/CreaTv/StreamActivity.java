@@ -10,6 +10,9 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.CheckBox;
 
 import org.json.JSONObject;
 
@@ -39,6 +42,9 @@ public class StreamActivity extends Activity {
         this.themeWrapper = new ContextThemeWrapper(this, R.style.AppDialogTheme);
         
         final Uri uriUrlTarget = Uri.parse(urlTarget);
+
+        final boolean isTwitch = (uriUrlTarget.getHost() != null) 
+        && uriUrlTarget.getHost().toLowerCase().contains("twitch");
         
         Thread networkThread = new Thread(new Runnable() {
             @Override
@@ -91,15 +97,33 @@ public class StreamActivity extends Activity {
                         @Override
                         public void run() {
                             if (isActivityDestroyed()) return;
+                            LinearLayout headerLayout = new LinearLayout(themeWrapper);
+                            headerLayout.setOrientation(LinearLayout.VERTICAL);
+                            int padding = (int) (14 * getResources().getDisplayMetrics().density);
+                            headerLayout.setPadding(padding, padding, padding, 0);
+                            TextView titleView = new TextView(themeWrapper);
+                            titleView.setText(R.string.calidad);
+                            titleView.setTextSize(18);
+                            titleView.setTypeface(null, android.graphics.Typeface.BOLD);
+                            headerLayout.addView(titleView);
+                            final CheckBox cbChat;
+                            if (isTwitch) {
+                                cbChat = new CheckBox(themeWrapper);
+                                cbChat.setText(R.string.abrirChatTwitch);
+                                cbChat.setChecked(true);
+                                headerLayout.addView(cbChat);
+                            } else {
+                                cbChat = null;
+                            }
                             new AlertDialog.Builder(themeWrapper)
-                                .setTitle(R.string.calidad)
+                                .setCustomTitle(headerLayout)
                                 .setItems(displayList.toArray(new CharSequence[0]), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         String selectedKey = keysList.get(which);
                                         String linkVideo = data.optString(selectedKey);
-                                        
-                                        launchPlayerAndChat(uriUrlTarget, linkVideo);
+                                        boolean openChat = (cbChat != null && cbChat.isChecked());
+                                        launchPlayerAndChat(uriUrlTarget, linkVideo, openChat);
                                     }
                                 })
                                 .setCancelable(false)
@@ -120,7 +144,7 @@ public class StreamActivity extends Activity {
         networkThread.start();
     }
 
-    private void launchPlayerAndChat(final Uri uriUrlTarget, final String linkVideo) {
+    private void launchPlayerAndChat(final Uri uriUrlTarget, final String linkVideo, final boolean openChat) {
         if (linkVideo == null || TextUtils.isEmpty(linkVideo)) {
             showErrorDialog(getString(R.string.noLink), getString(R.string.linkInvalid));
             return;
@@ -134,12 +158,12 @@ public class StreamActivity extends Activity {
             @Override
             public void run() {
                 if (isActivityDestroyed()) return;
-                if (getIntent().getBooleanExtra(Util.ONCHAT, false)) {
+                if (openChat) {
                     String creator = Util.getCreatorName(uriUrlTarget);
                     if (creator != null) {
-                        Intent cintent = new Intent(StreamActivity.this, ChatActivity.class);
+                        Intent cintent = new Intent(StreamActivity.this, MainActivity.class);
                         cintent.putExtra(Util.CREATORNAME, creator);
-                        cintent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        cintent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(cintent);
                     }
                 }
