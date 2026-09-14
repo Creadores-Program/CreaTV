@@ -36,7 +36,16 @@ public class MainActivity extends Activity {
         if (intent != null && intent.hasExtra(Util.CREATORNAME)) {
             String creator = intent.getStringExtra(Util.CREATORNAME);
             if (creator != null && webView != null) {
-                webView.loadUrl("file:///android_asset/chat/chat.html?channel=" + creator);
+                String chatUrl = "file:///android_asset/chat/chat.html?channel=" + creator;
+                int currentIndex = webView.copyBackForwardList().getCurrentIndex();
+                if (currentIndex > 0) {
+                    webView.loadUrl("javascript:location.replace('" + chatUrl + "');");
+                } else if (currentIndex == 0) {
+                    webView.loadUrl(chatUrl);
+                } else {
+                    webView.loadUrl("file:///android_asset/index.html");
+                    webView.loadUrl(chatUrl);
+                }
                 return true;
             }
         }
