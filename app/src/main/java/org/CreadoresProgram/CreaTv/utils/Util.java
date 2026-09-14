@@ -73,7 +73,6 @@ public class Util{
     private static final MediaType JSONHt = MediaType.parse("application/json; charset=utf-8");
     public static final String STREAMURL = "org.CreadoresProgram.CreaTv.STREAMURL";
     public static final String CREATORNAME = "org.CreadoresProgram.CreaTv.CREATORNAME";
-    public static final String ONCHAT = "org.CreadoresProgram.CreaTv.ONCHAT";
     public static final String YTID = "org.CreadoresProgram.CreaTv.YTID";
     private static final String userAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36";
     private static final Pattern CANONICAL_PATTERN = Pattern.compile(
@@ -106,7 +105,7 @@ public class Util{
             }
         }
     }
-    public static void openVideo(final String url, final boolean openChat, final Activity context){
+    public static void openVideo(final String url, final Activity context){
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -114,9 +113,6 @@ public class Util{
                     Intent intent = new Intent(context, org.CreadoresProgram.CreaTv.StreamActivity.class);
                     //intent.setData(Uri.parse(url));
                     intent.putExtra(STREAMURL, url);
-                    if(openChat){
-                        intent.putExtra(ONCHAT, openChat);
-                    }
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     context.startActivity(intent);
                 } catch (Exception e) {
