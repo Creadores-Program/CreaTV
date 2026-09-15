@@ -24,4 +24,8 @@
     <string name="errorVideoRep">Error Playing Video!</string>
     <string name="errorDesc">An unknown error occurred. Sometimes trying 3 more times works! Or maybe your content creator isn\'t online.</string>
     <string name="linkInvalid">Selected video link is invalid!</string>
+    <string name="servicioCreaTv">CreaTV Service</string>
+    <string name="servicioApagar">Tap here to turn off</string>
+    <string name="servicioActivo">Stream Service Active</string>
+    <string name="servicio">Stream Proxy</string>
 </resources>
