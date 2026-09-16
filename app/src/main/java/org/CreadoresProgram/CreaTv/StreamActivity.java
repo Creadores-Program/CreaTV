@@ -101,9 +101,9 @@ public class StreamActivity extends Activity {
                             headerLayout.setOrientation(LinearLayout.VERTICAL);
                             int padding = (int) (14 * getResources().getDisplayMetrics().density);
                             headerLayout.setPadding(padding, padding, padding, 0);
-                            TextView titleView = new TextView(themeWrapper);
+                            TextView titleView = new TextView(themeWrapper, null, android.R.attr.windowTitleStyle);
                             titleView.setText(R.string.calidad);
-                            titleView.setTextSize(18);
+                            titleView.setTextSize(20);
                             titleView.setTypeface(null, android.graphics.Typeface.BOLD);
                             headerLayout.addView(titleView);
                             final CheckBox cbChat;
@@ -124,6 +124,12 @@ public class StreamActivity extends Activity {
                                         String linkVideo = data.optString(selectedKey);
                                         boolean openChat = (cbChat != null && cbChat.isChecked());
                                         launchPlayerAndChat(uriUrlTarget, linkVideo, openChat);
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int whitch){
+                                        finish();
                                     }
                                 })
                                 .setCancelable(false)
