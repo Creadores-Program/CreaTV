@@ -11,6 +11,8 @@ on:
       - 'README.md'
       - 'backend/**'
       - '.github/images/**'
+  release:
+    types: [published]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,7 +38,12 @@ jobs:
       - name: Build App
         env:
           CREATVKEYCONTREAPP: ${{ secrets.CREATVKEYCONTREAPP }}
-        run: ./gradlew :app:assembleDebug --no-daemon
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            ./gradlew :app:assembleRelease --no-daemon
+          else
+            ./gradlew :app:assembleDebug --no-daemon
+          fi
 #      - name: Enable KVM group perms
 #        run: |
 #          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -58,5 +65,11 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v7
         with:
-          name: CreaTVApp
-          path: app/build/outputs/apk/debug/*.apk
+          name: ${{ github.event_name == 'release' && 'CreaTVApp-Release' || 'CreaTVApp-Debug' }}
+          path: path: ${{ github.event_name == 'release' && 'app/build/outputs/apk/release/*.apk' || 'app/build/outputs/apk/debug/*.apk' }}
+
+      - name: Attach APK to GitHub Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v3
+        with:
+          files: app/build/outputs/apk/release/*.apk
