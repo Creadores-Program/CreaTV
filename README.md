@@ -28,8 +28,8 @@ CreaTV ofrece soporte para las plataformas de streaming más populares:
 
 - ❌ **Google Fotos:** Es probable que falle o presente incompatibilidad al reproducir transmisiones en versiones antiguas de Android.
 - ✅ **VLC Player (Recomendado para Android 4.0+):** Se recomienda encarecidamente utilizar **VLC Player**, ya que ofrece mayor estabilidad, compatibilidad con formatos de red y funciones avanzadas como Picture-in-Picture (PiP).
-> [!WARNING]
-> ⚠️ Nota: Presenta cierres inesperados (crashes) en **Android 2.3 a 3.2**
+  > [!WARNING]
+  > Presenta cierres inesperados (crashes) en **Android 2.3 a 3.2**
 - ✅ **MX Player (Recomendado para Android 2.3–3.2):** Funciona correctamente y sin fallos en versiones legacy donde VLC genera problemas.
 
 ---
