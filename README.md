@@ -2,7 +2,7 @@
 
 **If you don't speak Spanish, go to the [Wiki](./wiki).**
 
-**CreaTV** es un cliente no oficial de plataformas de *streaming* diseñado específicamente para dispositivos **Android 4.1 a Android 10**. Permite acceder y reproducir transmisiones en vivo de manera ligera y optimizada.
+**CreaTV** es un cliente no oficial de plataformas de *streaming* diseñado específicamente para dispositivos **Android 2.3 a Android 10**. Permite acceder y reproducir transmisiones en vivo de manera ligera y optimizada.
 
 ---
 
@@ -19,7 +19,7 @@ CreaTV ofrece soporte para las plataformas de streaming más populares:
 
 ## ⚙️ Requisitos del Sistema
 
-- **Sistema Operativo:** Android 4.1 (Jelly Bean) hasta Android 10 (Quince Tart).
+- **Sistema Operativo:** Android 2.3 (Gingerbread) hasta Android 10 (Quince Tart).
 - **Reproductor de Video Externo:** Es **indispensable** contar con un reproductor de video instalado en el dispositivo para la reproducción de los streams.
 
 ---
@@ -27,7 +27,10 @@ CreaTV ofrece soporte para las plataformas de streaming más populares:
 ## 🧪 Pruebas y Reproductores Recomendados
 
 - ❌ **Google Fotos:** Es probable que falle o presente incompatibilidad al reproducir transmisiones en versiones antiguas de Android.
-- ✅ **VLC Player (Recomendado):** Se recomienda encarecidamente utilizar **VLC Player**, ya que ofrece mayor estabilidad, compatibilidad con formatos de red y funciones avanzadas como Picture-in-Picture (PiP).
+- ✅ **VLC Player (Recomendado para Android 4.0+):** Se recomienda encarecidamente utilizar **VLC Player**, ya que ofrece mayor estabilidad, compatibilidad con formatos de red y funciones avanzadas como Picture-in-Picture (PiP).
+> [!WARNING]
+> ⚠️ Nota: Presenta cierres inesperados (crashes) en **Android 2.3 a 3.2**
+- ✅ **MX Player (Recomendado para Android 2.3–3.2):** Funciona correctamente y sin fallos en versiones legacy donde VLC genera problemas.
 
 ---
 
@@ -49,15 +52,15 @@ A veces, al reproducir un video de YouTube o al lanzar un stream de otras plataf
 - **Causa:** Para ofrecer la app de forma totalmente gratuita, el servicio backend está alojado en la plataforma **Render.com** (plan gratuito). Si la instancia entra en modo suspensión por inactividad, tardará unos segundos en responder.
 - **Solución:** Si la transmisión falla al primer intento, **simplemente espera 3 segundos e intenta de nuevo**.
 
-### 2. Rendimiento en Android Antiguo (Android 4.1 - 4.4)
-- En versiones de Android 4.1 a 4.4 (Jelly Bean / KitKat), se puede experimentar **lag, ralentización o errores visuales** al reproducir contenido de **YouTube Live**. Esto se debe a que la `iframe API` de YouTube no está optimizada para la versión antigua de Webview integrada en estos sistemas.
+### 2. Rendimiento en Android Antiguo (Android 2.3 - 4.4)
+- En versiones de Android 2.3 a 4.4 (Gingerbread / KitKat), se puede experimentar **lag, ralentización o errores visuales** al reproducir contenido de **YouTube Live**. Esto se debe a que la `iframe API` de YouTube no está optimizada para la versión antigua de Webview integrada en estos sistemas.
 
 ## **Capturas de Pantalla**
 | Capturas | Capturas | Capturas |
 |----------|----------|----------|
-| ![Cap1](./.github/images/Screenshot_2026-08-10-16-52-59.png) | ![Cap2](./.github/images/Screenshot_2026-08-10-16-53-12.png) | ![Cap3](./.github/images/Screenshot_2026-08-10-16-53-17.png) |
+| ![Cap1](./.github/images/Screenshot_2026-09-17-13-12-50.png) | ![Cap2](./.github/images/Screenshot_2026-08-10-16-53-12.png) | ![Cap3](./.github/images/Screenshot_2026-08-10-16-53-17.png) |
 | ![Cap4](./.github/images/Screenshot_2026-08-14-19-52-34.png) | ![Cap5](./.github/images/Screenshot_2026-08-14-21-35-46.png) | ![Cap6](./.github/images/Screenshot_2026-08-14-21-36-14.png) |
-| ![Cap7](./.github/images/Screenshot_2026-08-14-21-37-38.png) |
+| ![Cap7](./.github/images/Screenshot_2026-08-14-21-37-38.png) | ![Cap8](./.github/images/Screenshot_2026-09-17-13-14-23.png)
 
 ---
 
