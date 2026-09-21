@@ -58,7 +58,7 @@ A veces, al reproducir un video de YouTube o al lanzar un stream de otras plataf
 ## **Capturas de Pantalla**
 | Capturas | Capturas | Capturas |
 |----------|----------|----------|
-| ![Cap1](./.github/images/Screenshot_2026-09-17-13-12-50.png) | ![Cap2](./.github/images/Screenshot_2026-08-10-16-53-12.png) | ![Cap3](./.github/images/Screenshot_2026-08-10-16-53-17.png) |
+| ![Cap1](./.github/images/Screenshot_2026-09-17-13-12-50.png) | ![Cap2](./.github/images/Screenshot_2026-08-10-16-53-12.png) | ![Cap3](./.github/images/Screenshot_2026-09-20-21-48-48.png) |
 | ![Cap4](./.github/images/Screenshot_2026-08-14-19-52-34.png) | ![Cap5](./.github/images/Screenshot_2026-08-14-21-35-46.png) | ![Cap6](./.github/images/Screenshot_2026-08-14-21-36-14.png) |
 | ![Cap7](./.github/images/Screenshot_2026-08-14-21-37-38.png) | ![Cap8](./.github/images/Screenshot_2026-09-17-13-14-23.png)
 
