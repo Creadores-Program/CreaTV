@@ -209,6 +209,7 @@ public class StreamActivity extends Activity {
     private String getDisplayKey(String key) {
         switch (key) {
             case "audio_only":
+            case "ao":
                 return getString(R.string.soloaudio);
             case "link_worst":
                 return getString(R.string.bajaCalidad);
