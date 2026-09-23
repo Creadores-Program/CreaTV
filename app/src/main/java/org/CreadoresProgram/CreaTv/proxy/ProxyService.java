@@ -12,7 +12,7 @@ import org.CreadoresProgram.CreaTv.R;
 
 import java.lang.reflect.Method;
 
-public class ProxyService extends Service {
+public class ProxyService extends Service implements ProxyServer.TimeoutListener {
 
     public static final String ACTION_STOP = "org.CreadoresProgram.CreaTv.proxy.ACTION_STOP";
     private static final int NOTIFICATION_ID = 9999;
@@ -32,11 +32,18 @@ public class ProxyService extends Service {
 
         if (!isServiceRunning && !ProxyServer.isRunning()) {
             isServiceRunning = true;
-            ProxyServer.start();
+            ProxyServer.start(this);
             showNotification();
+        } else if (ProxyServer.isRunning()) {
+            ProxyServer.updateActivityTime();
         }
 
         return START_STICKY;
+    }
+
+    @Override
+    public void onInactivityTimeout() {
+        stopSelf();
     }
 
     @SuppressWarnings("deprecation")
