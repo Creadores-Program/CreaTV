@@ -14,7 +14,11 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -25,14 +29,34 @@ import org.CreadoresProgram.CreaTv.utils.Util;
 public class ProxyServer {
 
     private static final int PROXY_PORT = 9999;
+    private static final long INACTIVITY_TIMEOUT_MS = 5 * 60 * 1000L;
+
     private static ServerSocket serverSocket;
     private static volatile boolean isRunning = false;
 
+    private static final AtomicLong lastActivityTime = new AtomicLong(0);
+    private static final AtomicInteger activeConnections = new AtomicInteger(0);
+    private static ScheduledExecutorService timeoutScheduler;
+    private static TimeoutListener listener;
+
     private static final OkHttpClient client = Util.clientHtStream;
 
-    public static synchronized void start() {
+    public interface TimeoutListener {
+        void onInactivityTimeout();
+    }
+
+    public static synchronized void start(TimeoutListener timeoutListener) {
         if (isRunning) return;
         isRunning = true;
+        listener = timeoutListener;
+        updateActivityTime();
+
+        timeoutScheduler = Executors.newSingleThreadScheduledExecutor();
+        timeoutScheduler.scheduleWithFixedDelay(new Runnable() {
+            public void run() {
+                checkInactivity();
+            }
+        }, 1, 1, TimeUnit.MINUTES);
 
         new Thread(new Runnable() {
             public void run() {
@@ -44,6 +68,7 @@ public class ProxyServer {
                     while (isRunning) {
                         try {
                             Socket clientSocket = serverSocket.accept();
+                            updateActivityTime();
                             new Thread(new ProxyHandler(clientSocket)).start();
                         } catch (IOException e) {
                             if (!isRunning) {
@@ -62,12 +87,36 @@ public class ProxyServer {
 
     public static synchronized void stop() {
         isRunning = false;
+
+        if (timeoutScheduler != null) {
+            timeoutScheduler.shutdownNow();
+            timeoutScheduler = null;
+        }
+
         closeQuietly(serverSocket);
         serverSocket = null;
+        listener = null;
     }
 
     public static boolean isRunning() {
         return isRunning;
+    }
+
+    public static void updateActivityTime() {
+        lastActivityTime.set(System.currentTimeMillis());
+    }
+
+    private static void checkInactivity() {
+        if (activeConnections.get() == 0) {
+            long elapsed = System.currentTimeMillis() - lastActivityTime.get();
+            if (elapsed >= INACTIVITY_TIMEOUT_MS) {
+                if (listener != null) {
+                    listener.onInactivityTimeout();
+                }
+            }
+        } else {
+            updateActivityTime();
+        }
     }
 
     public static String buildStreamUrl(String originalHttpsUrl) {
@@ -87,6 +136,9 @@ public class ProxyServer {
         }
 
         public void run() {
+            activeConnections.incrementAndGet();
+            updateActivityTime();
+
             InputStream vlcIn = null;
             OutputStream vlcOut = null;
             Response response = null;
@@ -144,6 +196,9 @@ public class ProxyServer {
                 closeQuietly(vlcIn);
                 closeQuietly(vlcOut);
                 closeQuietly(vlcSocket);
+
+                activeConnections.decrementAndGet();
+                updateActivityTime();
             }
         }
 
@@ -153,6 +208,7 @@ public class ProxyServer {
             while ((bytesRead = in.read(buffer)) != -1) {
                 out.write(buffer, 0, bytesRead);
                 out.flush();
+                updateActivityTime();
             }
         }
 
