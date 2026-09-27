@@ -1,5 +1,7 @@
 package org.CreadoresProgram.CreaTv.proxy;
 
+import android.text.TextUtils;
+
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
@@ -150,35 +152,70 @@ public class ProxyServer {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(vlcIn));
                 String requestLine = reader.readLine();
 
-                if (requestLine == null || !requestLine.startsWith("GET")) {
+                if (TextUtils.isEmpty(requestLine) || !requestLine.startsWith("GET")) {
                     closeQuietly(vlcSocket);
                     return;
                 }
 
+                String rangeHeader = null;
+                String headerLine;
+                while ((headerLine = reader.readLine()) != null && headerLine.length() > 0) {
+                    if (headerLine.toLowerCase().startsWith("range:")) {
+                        rangeHeader = headerLine.substring(6).trim();
+                    }
+                }
+
                 String targetUrlStr = extractTargetUrl(requestLine);
-                if (targetUrlStr == null) {
+                if (targetUrlStr == null || TextUtils.isEmpty(targetUrlStr)) {
                     send400BadRequest(vlcOut);
                     return;
                 }
 
-                Request request = new Request.Builder()
+                Request.Builder reqBuilder = new Request.Builder()
                         .url(targetUrlStr)
-                        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
-                        .build();
+                        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
 
-                response = client.newCall(request).execute();
-
-                int responseCode = response.code();
-                String contentType = response.header("Content-Type", "video/mp2t");
-                if (contentType == null) {
-                    contentType = "video/mp2t";
+                if (rangeHeader == null || !TextUtils.isEmpty(rangeHeader)) {
+                    reqBuilder.header("Range", rangeHeader);
                 }
 
-                PrintWriter writer = new PrintWriter(vlcOut);
-                writer.print("HTTP/1.1 " + responseCode + " OK\r\n");
-                writer.print("Content-Type: " + contentType + "\r\n");
-                writer.print("Connection: close\r\n\r\n");
-                writer.flush();
+                response = client.newCall(reqBuilder.build()).execute();
+
+                int responseCode = response.code();
+
+                String contentType = response.header("Content-Type");
+                if (contentType == null || TextUtils.isEmpty(contentType)) {
+                    if (targetUrlStr.toLowerCase().contains(".flv")) {
+                        contentType = "video/x-flv";
+                    } else if (targetUrlStr.toLowerCase().contains(".m3u8")) {
+                        contentType = "application/vnd.apple.mpegurl";
+                    } else {
+                        contentType = "video/mp2t";
+                    }
+                }
+
+                String statusMessage = (responseCode == 206) ? "Partial Content" : "OK";
+
+                StringBuilder headersBuilder = new StringBuilder();
+                headersBuilder.append("HTTP/1.1 ").append(responseCode).append(" ").append(statusMessage).append("\r\n");
+                headersBuilder.append("Content-Type: ").append(contentType).append("\r\n");
+
+                String contentLength = response.header("Content-Length");
+                if (contentLength == null || !TextUtils.isEmpty(contentLength)) {
+                    headersBuilder.append("Content-Length: ").append(contentLength).append("\r\n");
+                }
+
+                String contentRange = response.header("Content-Range");
+                if (contentRange == null || !TextUtils.isEmpty(contentRange)) {
+                    headersBuilder.append("Content-Range: ").append(contentRange).append("\r\n");
+                }
+
+                headersBuilder.append("Accept-Ranges: bytes\r\n");
+                headersBuilder.append("Connection: close\r\n\r\n");
+
+                byte[] headerBytes = headersBuilder.toString().getBytes("UTF-8");
+                vlcOut.write(headerBytes);
+                vlcOut.flush();
 
                 InputStream remoteIn = response.body().byteStream();
 
@@ -203,13 +240,13 @@ public class ProxyServer {
         }
 
         private void pipeStreamData(InputStream in, OutputStream out) throws IOException {
-            byte[] buffer = new byte[8192];
+            byte[] buffer = new byte[16384];
             int bytesRead;
             while ((bytesRead = in.read(buffer)) != -1) {
                 out.write(buffer, 0, bytesRead);
-                out.flush();
                 updateActivityTime();
             }
+            out.flush();
         }
 
         private void rewriteAndStreamM3u8(InputStream in, OutputStream out, String baseUrlStr) throws IOException {
