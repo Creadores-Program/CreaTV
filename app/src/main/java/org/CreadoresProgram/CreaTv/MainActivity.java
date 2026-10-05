@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Build;
 import android.content.ComponentCallbacks2;
+import android.content.Intent;
 import android.webkit.WebView;
 
 import org.CreadoresProgram.CreaTv.utils.Util;
@@ -19,7 +20,45 @@ public class MainActivity extends Activity {
         this.webView = (WebView) findViewById(R.id.webview);
         Util.configWebView(this.webView, this);
         webView.addJavascriptInterface(new JSInterface(this), "Android");
-        webView.loadUrl("file:///android_asset/index.html");
+        if (!checkAndLoadChat(getIntent())) {
+            webView.loadUrl("file:///android_asset/index.html");
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        checkAndLoadChat(intent);
+    }
+
+    private boolean checkAndLoadChat(Intent intent) {
+        if (intent != null && intent.hasExtra(Util.CREATORNAME)) {
+            String creator = intent.getStringExtra(Util.CREATORNAME);
+            if (creator != null && webView != null) {
+                String chatUrl = "file:///android_asset/chat/chat.html?channel=" + creator;
+                int currentIndex = webView.copyBackForwardList().getCurrentIndex();
+                if (currentIndex > 0) {
+                    webView.loadUrl("javascript:location.replace('" + chatUrl + "');");
+                } else if (currentIndex == 0) {
+                    webView.loadUrl(chatUrl);
+                } else {
+                    webView.loadUrl("file:///android_asset/index.html");
+                    webView.loadUrl(chatUrl);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView != null && webView.canGoBack()) {
+            webView.goBack();
+        }else{
+            super.onBackPressed();
+        }
     }
 
     @Override

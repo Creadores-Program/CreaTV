@@ -16,7 +16,6 @@
     <string name="hechoCreaPro">Créé par Creadores Program pour les appareils Android</string>
     <string name="pruebaNotPipe">Essayez NotPipe (Youtube Player android 1.5+)</string>
     <string name="verGithub">Voir le code source de CreaTV sur Github</string>
-    <string name="githubVersion">Télécharger la dernière version de CreaTV sur Github</string>
     <string name="noLink">Pas de lien !</string>
     <string name="nohayLink">Aucun lien fourni !</string>
     <string name="noCalidad">Aucune qualité vidéo disponible !</string>
@@ -24,4 +23,8 @@
     <string name="errorVideoRep">Erreur lors de la lecture de la vidéo !</string>
     <string name="errorDesc">Une erreur inconnue s\'est produite. Parfois, il suffit d\'essayer 3 fois de plus ! Ou peut-être que votre créateur de contenu n\'est pas en ligne.</string>
     <string name="linkInvalid">Le lien de la vidéo sélectionnée n\'est pas valide !</string>
+    <string name="servicioCreaTv">Service CreaTV</string>
+    <string name="servicioApagar">Appuyez ici pour éteindre</string>
+    <string name="servicioActivo">Service de Stream Actif</string>
+    <string name="servicio">Proxy Stream</string>
 </resources>

@@ -11,6 +11,18 @@ on:
       - 'README.md'
       - 'backend/**'
       - '.github/images/**'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      simulate_release:
+        description: '¿Simulate a release event?'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,7 +48,12 @@ jobs:
       - name: Build App
         env:
           CREATVKEYCONTREAPP: ${{ secrets.CREATVKEYCONTREAPP }}
-        run: ./gradlew :app:assembleDebug --no-daemon
+        run: |
+          if [ "${{ github.event_name }}" = "release" ] || [ "${{ inputs.simulate_release }}" = "true" ]; then
+            ./gradlew :app:assembleRelease --no-daemon
+          else
+            ./gradlew :app:assembleDebug --no-daemon
+          fi
 #      - name: Enable KVM group perms
 #        run: |
 #          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -58,5 +75,20 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v7
         with:
-          name: CreaTVApp
-          path: app/build/outputs/apk/debug/*.apk
+          name: ${{ (github.event_name == 'release' || inputs.simulate_release) && 'CreaTVApp-Release' || 'CreaTVApp-Debug' }}
+          path: ${{ (github.event_name == 'release' || inputs.simulate_release) && 'app/build/outputs/apk/release/*.apk' || 'app/build/outputs/apk/debug/*.apk' }}
+
+      - name: Attach APK to GitHub Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v3
+        with:
+          files: app/build/outputs/apk/release/*.apk
+
+      - name: Sync FDroid Repo
+        if: github.event_name == 'release'
+        uses: peter-evans/repository-dispatch@v4
+        with:
+          token: ${{ secrets.FDROID_SYNC }}
+          repository: Creadores-Program/CreaProFDR
+          event-type: app_updated
+          client-payload: '{"app_name": "${{ github.event.repository.name }}"}'
