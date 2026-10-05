@@ -55,6 +55,9 @@ A veces, al reproducir un video de YouTube o al lanzar un stream de otras plataf
 ### 2. Rendimiento en Android Antiguo (Android 2.3 - 4.4)
 - En versiones de Android 2.3 a 4.4 (Gingerbread / KitKat), se puede experimentar **lag, ralentización o errores visuales** al reproducir contenido de **YouTube Live**. Esto se debe a que la `iframe API` de YouTube no está optimizada para la versión antigua de Webview integrada en estos sistemas.
 
+### 3. Proxy TLS 1.2 / 1.3 (Android 2.3 - 3.3)
+- El soporte mediante proxy **TLS 1.2/1.3** para **Android 2.3 a 3.3** se encuentra actualmente en **fase experimental**, por lo que se pueden presentar fallos de conexión o inestabilidad al conectar con servidores modernos.
+
 ## **Capturas de Pantalla**
 | Capturas | Capturas | Capturas |
 |----------|----------|----------|
