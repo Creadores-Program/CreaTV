@@ -14,53 +14,70 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.CheckBox;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.io.IOException;
 
 import org.CreadoresProgram.CreaTv.utils.Util;
 import org.CreadoresProgram.CreaTv.proxy.*;
 
+import org.streamlink.android.Streamlink;
+import org.streamlink.android.stream.MuxedStream;
+import org.streamlink.android.stream.Stream;
+
 public class StreamActivity extends Activity {
 
     private ContextThemeWrapper themeWrapper;
 
+    private static class StreamSelection {
+        final String videoUrl;
+        final String audioUrl;
+        final boolean isMuxed;
+
+        StreamSelection(String videoUrl, String audioUrl, boolean isMuxed) {
+            this.videoUrl = videoUrl;
+            this.audioUrl = audioUrl;
+            this.isMuxed = isMuxed;
+        }
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_loading);
-        
-        String urlTarget = (getIntent().getData() != null) ? getIntent().getData().toString() : getIntent().getStringExtra(Util.STREAMURL);
-        if(urlTarget == null){
+
+        String urlTarget = (getIntent().getData() != null)
+                ? getIntent().getData().toString()
+                : getIntent().getStringExtra(Util.STREAMURL);
+        if (urlTarget == null) {
             finish();
             return;
         }
 
         this.themeWrapper = new ContextThemeWrapper(this, R.style.AppDialogTheme);
-        
+
         final Uri uriUrlTarget = Uri.parse(urlTarget);
 
-        final boolean isTwitch = (uriUrlTarget.getHost() != null) 
-        && uriUrlTarget.getHost().toLowerCase().contains("twitch");
-        
+        final boolean isTwitch = (uriUrlTarget.getHost() != null)
+                && uriUrlTarget.getHost().toLowerCase().contains("twitch");
+
         Thread networkThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
-                    if(uriUrlTarget.getHost() != null){
+                try {
+                    if (uriUrlTarget.getHost() != null) {
                         String hostYt = uriUrlTarget.getHost().toLowerCase();
-                        if(hostYt.contains("youtube") || hostYt.contains("you.be")){
+                        if (hostYt.contains("youtube") || hostYt.contains("you.be")) {
                             final String videoId = Util.getYtId(urlTarget);
                             if (videoId == null || TextUtils.isEmpty(videoId.trim())) {
                                 showErrorDialog(getString(R.string.noLink), getString(R.string.noCalidad));
                                 return;
                             }
-                            runOnUiThread(new Runnable(){
+                            runOnUiThread(new Runnable() {
                                 @Override
-                                public void run(){
+                                public void run() {
                                     if (isActivityDestroyed()) return;
                                     Intent ytPintent = new Intent(StreamActivity.this, YTPlayerActivity.class);
                                     ytPintent.putExtra(Util.YTID, videoId);
@@ -72,25 +89,36 @@ public class StreamActivity extends Activity {
                             return;
                         }
                     }
-                    
-                    final JSONObject data = Util.getVideoLink(urlTarget);
-                    if (data == null || data.length() == 0) {
+
+                    Streamlink.setHttpClient(Util.clientHtStream);
+
+                    Map<String, Stream> streams = Streamlink.streams(urlTarget);
+                    if (streams == null || streams.isEmpty()) {
                         showErrorDialog(getString(R.string.noLink), getString(R.string.nohayLink));
                         return;
                     }
 
-                    final List<String> keysList = new ArrayList<String>();
-                    final List<String> displayList = new ArrayList<String>();
-                    Iterator<String> keys = data.keys();
-                    while (keys.hasNext()) {
-                        String key = keys.next();
-                        keysList.add(key);
-                        displayList.add(getDisplayKey(key));
+                    final Map<String, StreamSelection> validSelections = new LinkedHashMap<String, StreamSelection>();
+                    for (Map.Entry<String, Stream> entry : streams.entrySet()) {
+                        String key = entry.getKey();
+                        Stream stream = entry.getValue();
+                        if (key != null && stream != null) {
+                            StreamSelection selection = buildSelection(stream);
+                            if (selection != null && !TextUtils.isEmpty(selection.videoUrl)) {
+                                validSelections.put(key, selection);
+                            }
+                        }
                     }
 
-                    if (keysList.isEmpty()) {
+                    if (validSelections.isEmpty()) {
                         showErrorDialog(getString(R.string.noLink), getString(R.string.noCalidad));
                         return;
+                    }
+
+                    final List<String> keysList = new ArrayList<String>(validSelections.keySet());
+                    final List<String> displayList = new ArrayList<String>();
+                    for (String key : keysList) {
+                        displayList.add(getDisplayKey(key));
                     }
 
                     runOnUiThread(new Runnable() {
@@ -121,14 +149,14 @@ public class StreamActivity extends Activity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         String selectedKey = keysList.get(which);
-                                        String linkVideo = data.optString(selectedKey);
+                                        StreamSelection selection = validSelections.get(selectedKey);
                                         boolean openChat = (cbChat != null && cbChat.isChecked());
-                                        launchPlayerAndChat(uriUrlTarget, linkVideo, openChat);
+                                        launchPlayerAndChat(uriUrlTarget, selection, openChat);
                                     }
                                 })
                                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int whitch){
+                                    public void onClick(DialogInterface dialog, int whitch) {
                                         finish();
                                     }
                                 })
@@ -140,7 +168,7 @@ public class StreamActivity extends Activity {
 
                 } catch (final IOException e) {
                     showErrorDialog(getString(R.string.errorRed), e.getMessage());
-                } catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getString(R.string.app_name), getString(R.string.errorVideoRep), e);
                     showErrorDialog("Error!", getString(R.string.errorDesc));
@@ -150,7 +178,20 @@ public class StreamActivity extends Activity {
         networkThread.start();
     }
 
-    private void launchPlayerAndChat(final Uri uriUrlTarget, final String linkVideo, final boolean openChat) {
+    private StreamSelection buildSelection(Stream stream) {
+        if (stream instanceof MuxedStream) {
+            MuxedStream muxed = (MuxedStream) stream;
+            Stream videoStream = muxed.getVideoStream();
+            Stream audioStream = muxed.getAudioStream();
+            String videoUrl = (videoStream != null) ? videoStream.getUrl() : null;
+            String audioUrl = (audioStream != null) ? audioStream.getUrl() : null;
+            return new StreamSelection(videoUrl, audioUrl, true);
+        }
+        return new StreamSelection(stream.getUrl(), null, false);
+    }
+
+    private void launchPlayerAndChat(final Uri uriUrlTarget, final StreamSelection selection, final boolean openChat) {
+        final String linkVideo = (selection != null) ? selection.videoUrl : null;
         if (linkVideo == null || TextUtils.isEmpty(linkVideo)) {
             showErrorDialog(getString(R.string.noLink), getString(R.string.linkInvalid));
             return;
@@ -174,7 +215,13 @@ public class StreamActivity extends Activity {
                     }
                 }
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse((Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR2) ? ProxyServer.buildStreamUrl(linkVideo) : linkVideo), "video/*");
+                String targetUrl = (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR2)
+                        ? ProxyServer.buildStreamUrl(linkVideo)
+                        : linkVideo;
+                intent.setDataAndType(Uri.parse(targetUrl), "video/*");
+                if (selection.isMuxed && !TextUtils.isEmpty(selection.audioUrl)) {
+                    intent.putExtra("audio_url", selection.audioUrl);
+                }
                 startActivity(intent);
                 finish();
             }
@@ -206,19 +253,23 @@ public class StreamActivity extends Activity {
             }
         });
     }
+
     private String getDisplayKey(String key) {
         switch (key) {
             case "audio_only":
             case "ao":
                 return getString(R.string.soloaudio);
+            case "worst":
             case "link_worst":
                 return getString(R.string.bajaCalidad);
+            case "best":
             case "link_best":
                 return getString(R.string.mejorCalidad);
             default:
                 return key;
         }
     }
+
     private boolean isActivityDestroyed() {
         if (isFinishing()) return true;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
