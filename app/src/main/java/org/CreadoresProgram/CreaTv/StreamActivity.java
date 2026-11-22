@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.io.IOException;
 
 import org.CreadoresProgram.CreaTv.utils.Util;
 import org.CreadoresProgram.CreaTv.proxy.*;
@@ -164,7 +163,7 @@ public class StreamActivity extends Activity {
                         }
                     });
 
-                } catch (final IOException e) {
+                } catch (final Exception e) {
                     showErrorDialog(getString(R.string.errorRed), e.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
