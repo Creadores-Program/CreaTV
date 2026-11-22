@@ -9,7 +9,7 @@ dependencies {
 
 android {
     namespace 'org.CreadoresProgram.CreaTv'
-    compileSdkVersion 29
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 9
