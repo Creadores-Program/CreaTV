@@ -67,7 +67,7 @@ public class StreamActivity extends Activity {
             @Override
             public void run() {
                 try {
-                    if (uriUrlTarget.getHost() != null) {
+                    /*if (uriUrlTarget.getHost() != null) {
                         String hostYt = uriUrlTarget.getHost().toLowerCase();
                         if (hostYt.contains("youtube") || hostYt.contains("you.be")) {
                             final String videoId = Util.getYtId(urlTarget);
@@ -88,9 +88,7 @@ public class StreamActivity extends Activity {
                             });
                             return;
                         }
-                    }
-
-                    Streamlink.setHttpClient(Util.clientHtStream);
+                    }*/
 
                     Map<String, Stream> streams = Streamlink.streams(urlTarget);
                     if (streams == null || streams.isEmpty()) {
