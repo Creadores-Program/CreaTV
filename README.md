@@ -13,7 +13,7 @@ CreaTV ofrece soporte para las plataformas de streaming más populares:
 - 🟣 **Twitch**
 - 🟢 **Kick**
 - 🖤 **TikTok Live**
-- 🔴 **YouTube Live** *(Implementado a través de iframe API para eludir restricciones de antibots)*
+- 🔴 **YouTube Live**
 
 ---
 
@@ -47,15 +47,7 @@ Actualmente, el servicio de chat en vivo **solo está soportado para Twitch**.
 
 ## ⚠️ Inconvenientes Conocidos y Notas Técnicas
 
-### 1. Tiempos de espera o reinicio del Backend (Render.com)
-A veces, al reproducir un video de YouTube o al lanzar un stream de otras plataformas, la app puede mostrar **errores sin contexto** o **timeout**.
-- **Causa:** Para ofrecer la app de forma totalmente gratuita, el servicio backend está alojado en la plataforma **Render.com** (plan gratuito). Si la instancia entra en modo suspensión por inactividad, tardará unos segundos en responder.
-- **Solución:** Si la transmisión falla al primer intento, **simplemente espera 3 segundos e intenta de nuevo**.
-
-### 2. Rendimiento en Android Antiguo (Android 2.3 - 4.4)
-- En versiones de Android 2.3 a 4.4 (Gingerbread / KitKat), se puede experimentar **lag, ralentización o errores visuales** al reproducir contenido de **YouTube Live**. Esto se debe a que la `iframe API` de YouTube no está optimizada para la versión antigua de Webview integrada en estos sistemas.
-
-### 3. Proxy TLS 1.2 / 1.3 (Android 2.3 - 3.3)
+### Proxy TLS 1.2 / 1.3 (Android 2.3 - 3.3)
 - El soporte mediante proxy **TLS 1.2/1.3** para **Android 2.3 a 3.3** se encuentra actualmente en **fase experimental**, por lo que se pueden presentar fallos de conexión o inestabilidad al conectar con servidores modernos.
 
 ## **Capturas de Pantalla**
@@ -70,6 +62,7 @@ A veces, al reproducir un video de YouTube o al lanzar un stream de otras plataf
 ## 🎨 Créditos
 
 - **Diseño del Logotipo:** zManuReal_
+- **Reescritura de [Streamlink](https://github.com/streamlink/streamlink) a Java:** Google AI Studio
 
 ---
 

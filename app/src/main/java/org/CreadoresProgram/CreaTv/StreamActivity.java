@@ -66,29 +66,6 @@ public class StreamActivity extends Activity {
             @Override
             public void run() {
                 try {
-                    /*if (uriUrlTarget.getHost() != null) {
-                        String hostYt = uriUrlTarget.getHost().toLowerCase();
-                        if (hostYt.contains("youtube") || hostYt.contains("you.be")) {
-                            final String videoId = Util.getYtId(urlTarget);
-                            if (videoId == null || TextUtils.isEmpty(videoId.trim())) {
-                                showErrorDialog(getString(R.string.noLink), getString(R.string.noCalidad));
-                                return;
-                            }
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (isActivityDestroyed()) return;
-                                    Intent ytPintent = new Intent(StreamActivity.this, YTPlayerActivity.class);
-                                    ytPintent.putExtra(Util.YTID, videoId);
-                                    ytPintent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(ytPintent);
-                                    finish();
-                                }
-                            });
-                            return;
-                        }
-                    }*/
-
                     Map<String, Stream> streams = Streamlink.streams(urlTarget);
                     if (streams == null || streams.isEmpty()) {
                         showErrorDialog(getString(R.string.noLink), getString(R.string.nohayLink));
