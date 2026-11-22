@@ -40,9 +40,6 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
-
-      - name: Perms Gradle
-        run: chmod 777 gradlew
       - name: Set Key
         run: echo "${{ secrets.CREATVKEYAPPB }}" | base64 -d > app/CreaTv.keystore
       - name: Build App
@@ -50,9 +47,9 @@ jobs:
           CREATVKEYCONTREAPP: ${{ secrets.CREATVKEYCONTREAPP }}
         run: |
           if [ "${{ github.event_name }}" = "release" ] || [ "${{ inputs.simulate_release }}" = "true" ]; then
-            ./gradlew :app:assembleRelease --no-daemon
+            gradle :app:assembleRelease --no-daemon
           else
-            ./gradlew :app:assembleDebug --no-daemon
+            gradle :app:assembleDebug --no-daemon
           fi
 #      - name: Enable KVM group perms
 #        run: |
