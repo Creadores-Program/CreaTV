@@ -163,12 +163,10 @@ public class StreamActivity extends Activity {
                         }
                     });
 
-                } catch (final Exception e) {
-                    showErrorDialog(getString(R.string.errorRed), e.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(getString(R.string.app_name), getString(R.string.errorVideoRep), e);
-                    showErrorDialog("Error!", getString(R.string.errorDesc));
+                    showErrorDialog(getString(R.string.errorRed), getString(R.string.errorDesc));
                 }
             }
         });
