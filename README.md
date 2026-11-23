@@ -1,6 +1,6 @@
 # 📺 CreaTV
 
-**If you don't speak Spanish, go to the [Wiki](./wiki).**
+**If you don't speak Spanish, go to the [Wiki](https://github.com/Creadores-Program/CreaTV/wiki).**
 
 **CreaTV** es un cliente no oficial de plataformas de *streaming* diseñado específicamente para dispositivos **Android 2.3 a Android 10**. Permite acceder y reproducir transmisiones en vivo de manera ligera y optimizada.
 
